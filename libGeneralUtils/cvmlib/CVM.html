@@ -1,0 +1,1206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.9.104  (Linux)">
+	<META NAME="CREATED" CONTENT="20060121;22511600">
+	<META NAME="CHANGED" CONTENT="20060228;1071600">
+	<STYLE>
+	<!--
+		@page { size: 8.5in 11in; margin: 0.79in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; text-align: left; widows: 0; orphans: 0 }
+		P.western { font-family: "Nimbus Roman No9 L", serif; font-size: 12pt; so-language: en-US }
+		P.cjk { font-family: "Luxi Sans"; font-size: 12pt; so-language:  }
+		P.ctl { font-family: "Luxi Sans"; font-size: 10pt; so-language:  }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" DIR="LTR">
+<B></B><P CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT SIZE=7 STYLE="font-size: 32pt"><B>CVM<B></B>
+<B></B>Library</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Overview</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">	The<B></B>
+<B></B>CVM library is a library for complex numbers, dense vectors and dense<B></B>
+<B></B>matrices written in ANSI C++ 98.  So it should be portable to your<B></B>
+<B></B>compiler and platform.  It is designed to give an intuitive interface<B></B>
+<B></B>to these objects in much the same semantics as the built-in C++<B></B>
+<B></B>types. (Yes, the name came from CVMT which is the complex number,<B></B>
+<B></B>vector, matrix and tensor library, but I don’t understand tensors<B></B>
+<B></B>enough to write that code.  If someone would like to explain them to<B></B>
+<B></B>me email me at </FONT></FONT></SPAN></SPAN><FONT COLOR="#000080"><U><A HREF="mailto:jasonar81@yahoo.com"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3>jasonar81@yahoo.com</FONT></SPAN></SPAN></A></U></FONT><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">.)<B></B>
+<B></B> I wrote this library because I needed a complex matrix class, but<B></B>
+<B></B>everything I could find on the internet had unwieldy syntax or would<B></B>
+<B></B>not build on my system (or wasn’t free).</FONT></FONT></SPAN></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><B>The<B></B>
+<B></B>library is designed in such as fashion that you should be able to<B></B>
+<B></B>start right in using these new types exactly as you would expect to.</B><SPAN STYLE="font-weight: medium"><B></B>
+<B></B> If you however insist on the details:</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Installation installation</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Installation<B></B>
+<a name="Installation"></a>
+<B></B>and use</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Installation instructions are in INSTALL.  If the<B></B>
+<B></B>./configure etc... route won’t work for installation, read README. <B></B>
+<B></B>Otherwise, follow the directions in INSTALL.  Then put #include<B></B>
+<B></B>&lt;cvm.h&gt; in your program and use -lcvm after the source file<B></B>
+<B></B>name to link with the library if you are using g++ (gcc).  This will<B></B>
+<B></B>link your program with the static version of the library.  If you<B></B>
+<B></B>wish to link with the shared version of the library you would have to<B></B>
+<B></B>do something like:</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>libtool g++ -o your_file your_file.cc -lcvm -R<B></B>
+<B></B>/usr/local/lib</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>If you are using a different compiler, you will have to<B></B>
+<B></B>look at the documentation for the compiler to figure out how to link<B></B>
+<B></B>with the library, or read README for the simplest possible way of<B></B>
+<B></B>making things work.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Classes</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><B>	</B><SPAN STYLE="font-weight: medium">The<B></B>
+<B></B>included classes are:</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ShortComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>IntComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>DoubleComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongDoubleComplex</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ShortVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ShortComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>IntVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>IntComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>DoubleVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>DoubleComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongDoubleVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongDoubleComplexVector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ShortMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ShortComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>IntMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>IntComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>DoubleMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>DoubleComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongDoubleMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>LongDoubleComplexMatrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>CVMError</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Details</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>CVMError</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>CVMError is the type of object that gets thrown when an<B></B>
+<B></B>error is encountered in the vector or matrix routine.  The complex<B></B>
+<B></B>number routines do not throw errors.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Complex<B></B>
+<B></B>Floating Point Classes</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Constructors</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The complex floating point types have default<B></B>
+<B></B>constructors (which initializes them to 0).  They also can be created<B></B>
+<B></B>from the built-in types which allows them to work perfectly in<B></B>
+<B></B>expressions that are partly real partly complex.  Values will<B></B>
+<B></B>automatically be converted to the proper types.  That is any built-in<B></B>
+<B></B>data type will be converted to its corresponding complex type if<B></B>
+<B></B>necessary.  Different complex types can also be mixed in expressions.<B></B>
+<B></B> They will be converted as necessary as long as that conversion is<B></B>
+<B></B>upwards: short -&gt; int -&gt; long - &gt; float -&gt; double -&gt;<B></B>
+<B></B>long double.  No downward conversion will occur.  LongDoubleComplex<B></B>
+<B></B>types will not convert to DoubleComplex for an assignment as the<B></B>
+<B></B>corresponding built-in types will in C++.  There is also an explicit<B></B>
+<B></B>constructor that takes (real, imag).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Operators</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The operators +=, -=, *=, /=, =, -, +, *, /, ==, !=, &lt;&lt;,<B></B>
+<B></B>&gt;&gt; exist for all of the complex number types and behave exactly<B></B>
+<B></B>as they do for the built-in types.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Math<B></B>
+<B></B>Functions</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>exp, cos, cosh, sin, sinh, tan, tanh, sqrt, pow, acos,<B></B>
+<B></B>acosh, asin, asinh, atan, atanh, log are all provided.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR arg() Arg()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>arg()</B></FONT></P><B></B>
+<a name="arg("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>arg() takes a complex number and returns Arg, the<B></B>
+<B></B>principal value of the angle of the complex number.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Conj() conj()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>conj()</B></FONT></P><B></B>
+<a name="Conj("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>conj() takes a complex number and returns its complex<B></B>
+<B></B>conjugate.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Ln() ln()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>ln()</B></FONT></P><B></B>
+<a name="Ln("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>ln() provides the natural log for any complex number<B></B>
+<B></B>(log() does the same thing).  Furthermore if ln is passed a negative<B></B>
+<B></B>real number, it will handle it and return a FloatComplex.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR norm() abs()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>norm()<B></B>
+<a name="norm("></a>
+<B></B>and abs()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>abs() and norm() both take a complex number.  Abs()<B></B>
+<B></B>returns sqrt(real^2 + imag^2).  Norm() returns abs^2.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Polar() polar()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>polar()</B></FONT></P><B></B>
+<a name="Polar("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>polar(r, theta) returns the complex number (in<B></B>
+<B></B>rectangular format) associated with the polar format number.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Read() read()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>read()</B></FONT></P><B></B>
+<a name="Read("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>read(fstream, complex number) takes an fstream and a<B></B>
+<B></B>complex number.  It reads a complex number into the complex number<B></B>
+<B></B>variable from a binary fstream.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR real() imag()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>real()<B></B>
+<a name="real("></a>
+<B></B>and imag()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The complex number objects have real() and imag() member<B></B>
+<B></B>functions that return the real and imaginary parts of the numbers<B></B>
+<B></B>respectively.  They actually return a reference, so they can be used<B></B>
+<B></B>on the left hand side of an assignment as well.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Write() write()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>write()</B></FONT></P><B></B>
+<a name="Write("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>write(fstream, complex number) takes an fstream and a<B></B>
+<B></B>complex number.  It write the complex number to the binary fstream.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Integer<B></B>
+<B></B>Complex Types</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The integer complex types behave the same as the<B></B>
+<B></B>floating point complex types, but they are more restricted.  Division<B></B>
+<B></B>operations with integer complex types only do integer division. <B></B>
+<B></B>Furthermore, if you want to call one of the functions listed under<B></B>
+<B></B>math functions for an integer complex type, you must first static<B></B>
+<B></B>cast the complex number to a floating point complex number type. <B></B>
+<B></B>This means that the math function will then return a floating point<B></B>
+<B></B>complex type which cannot be assigned back to an integer complex<B></B>
+<B></B>type.  The <a href="#Read(">read(</a>) and <a href="#Write(">write(</a>) functions do exist for the integer<B></B>
+<B></B>complex types.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Floating<B></B>
+<B></B>Point Matrix Types</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Constructors</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">Each<B></B>
+<B></B>matrix type has a default constructor that creates a 1 X 1 matrix. <B></B>
+<B></B>M</SPAN><B>atrices will automatically resize as necessary upon<B></B>
+<B></B>assignment.</B><SPAN STYLE="font-weight: medium">  There is also an<B></B>
+<B></B>explicit constructor that takes (rows, columns).  Just as with the<B></B>
+<B></B>complex numbers, matrix types will automatically be upwardly<B></B>
+<B></B>converted as necessary (see Floating Point Complex Types:<B></B>
+<B></B>Constructors).  Furthermore, complex matrix types can be created out<B></B>
+<B></B>of real matrix types as long as the conversion is still upwards.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>+=</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has a += operator.  This operator will<B></B>
+<B></B>throw a CVMError if there is a matrix size mismatch.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>-=</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has a -= operator.  This operator will<B></B>
+<B></B>throw a CVMError if there is a matrix size mismatch.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>*=</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has a *= operator.  The right hand side<B></B>
+<B></B>can be either another matrix (or a vector see below) or a real (or<B></B>
+<B></B>complex) number.  This operator will throw a CVMError if there is a<B></B>
+<B></B>matrix size mismatch.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>/=</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has a /= operator.  The right hand side<B></B>
+<B></B>of this operator needs to be a real (or complex) number.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>A<B></B>
+<B></B>couple other operators</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has assignment, unary -, and unary +<B></B>
+<B></B>operators.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Some<B></B>
+<B></B>more operators</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">The<B></B>
+<B></B>binary operators + and – are overloaded for the matrix types.  A<B></B>
+<B></B>CVMError will be thrown if there is a matrix size mismatch.  The<B></B>
+<B></B>multiplication operator is also overloaded for matrix-matrix<B></B>
+<B></B>multiplication as well as pre and post multiplication by a real (or<B></B>
+<B></B>complex) number.  Obviously the matrix-matrix multiplication can<B></B>
+<B></B>throw a CVMError if there is a size mismatch.  Matrices can also be<B></B>
+<B></B>divided by a scalar value.  Also present is (scalar value) /<B></B>
+<B></B>(matrix), which performs (scalar value) * (matrix)^-1.  Please note<B></B>
+<B></B>that this does call <a href="#Inverse(">inverse(</a>).  The == and != operators have also<B></B>
+<B></B>been overloaded for the matrix types.  You can test for equality (or<B></B>
+<B></B>inequality) with unequal size matrices.  They will just be considered<B></B>
+<B></B>unequal.  The input operator (&gt;&gt;) is also present.  The first<B></B>
+<B></B>values entered becomes the number of rows.  The second value becomes<B></B>
+<B></B>the number of columns, and then the matrix elements are entered in<B></B>
+<B></B>row major order.  Finally, the output operator (&lt;&lt;) is<B></B>
+<B></B>overloaded as well (see <a href="#set_width(">set_width(</a>) and <a href="#set_width(">get_width(</a>)).  </SPAN><B>Note<B></B>
+<B></B>that the operators are reserved for real mathematical operations,<B></B>
+<B></B>that is * represents matrix multiplication not element-wise<B></B>
+<B></B>multiplication, and a matrix cannot be divided by another matrix.</B></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>[]</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">The<B></B>
+<B></B>subscript operator returns a row vector of the matrix.  This allows<B></B>
+<B></B>matrix[row][col] to then return a specific element of the matrix. <B></B>
+<B></B>Actually both of these subscript operators return references allowing<B></B>
+<B></B>you to set a particular element of a matrix or to do things like<B></B>
+<B></B>assign a row of a matrix from a vector (vectors are implemented as<B></B>
+<B></B>row vectors see below).  This function will throw a CVMError if the<B></B>
+<B></B>index is out of bounds.  </SPAN><B>All indexing is zero based.</B></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B><a href="#norm(">abs(</a>)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#norm(">abs(</a>) takes a matrix as its argument and returns the<B></B>
+<B></B>matrix where the <a href="#norm(">abs(</a>) function has been applied element-wise to<B></B>
+<B></B><a href="#norm(">abs(</a>)’s argument.  The argument to <a href="#norm(">abs(</a>) does not get modified in<B></B>
+<B></B>any way.  Abs() exists for all floating point matrix types.  There is<B></B>
+<B></B>no need for any silly prefixing like fabs() or labs() or whatever. <B></B>
+<B></B>Also note that for complex matrices this function returns a real<B></B>
+<B></B>matrix since <a href="#norm(">abs(</a>) of complex number is a real number (see <a href="#norm(">abs(</a>) in<B></B>
+<B></B>the complex number section above).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR addcol() mulcol()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>addcol()<B></B>
+<a name="addcol("></a>
+<B></B>mulcol() swapcol()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>addcol(). mulcol(), and swapcol() work exactly like<B></B>
+<B></B><a href="#Addrow(">addrow(</a>), <a href="#Mulrow(">mulrow(</a>), and <a href="#Swaprow(">swaprow(</a>) except with columns.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Addrow() addrow()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>addrow()</B></FONT></P><B></B>
+<a name="Addrow("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>addrow(dest row, coeff, source row) is a member function<B></B>
+<B></B>that does dest row += coeff * source row.  This function returns a<B></B>
+<B></B>reference to the calling object.  If any indexes are out of bounds, a<B></B>
+<B></B>CVMError is thrown.  Note that this functions uses zero based<B></B>
+<B></B>indexes.  There is also a non-member version of this function that<B></B>
+<B></B>takes a matrix as its first argument.  It returns the resultant<B></B>
+<B></B>matrix, but does not modify its argument.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Augment() augment()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>augment()</B></FONT></P><B></B>
+<a name="Augment("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>augment() is a member function that takes another matrix<B></B>
+<B></B>as its argument.  augment() actually attaches the argument matrix<B></B>
+<B></B>onto the right hand side of the calling object.  These two matrices<B></B>
+<B></B>must have the same number of rows or a CVMError object will be<B></B>
+<B></B>thrown.  augment() returns a reference to the calling object.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B><a href="#Conj(">conj(</a>)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Conj(">conj(</a>) is a function that takes a complex matrix as an<B></B>
+<B></B>argument and returns the matrix where every element has been<B></B>
+<B></B>converted to its complex conjugate.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Det() det()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>det()</B></FONT></P><B></B>
+<a name="Det("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>det() takes a matrix as its argument.  det() returns the<B></B>
+<B></B>determinant of the argument matrix.  det() will throw a CVMError if<B></B>
+<B></B>the argument matrix is not square.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Diag() diag()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>diag()</B></FONT></P><B></B>
+<a name="Diag("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Every matrix class includes a static member function<B></B>
+<B></B>diag(values[], size) that returns the size X size diagonal matrix<B></B>
+<B></B>that has values[] as the elements on the main diagonal.  matrix[0][0]<B></B>
+<B></B>is set to values[0], matrix[1][1] is set to values[1], and so on.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Divide() divide()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>divide()</B></FONT></P><B></B>
+<a name="Divide("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>divide() is a member function with the same semantics as<B></B>
+<B></B><a href="#Multiply(">multiply(</a>) except that element-wise division occurs.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Eigenvalues() eigenvalues()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>eigenvalues()</B></FONT></P><B></B>
+<a name="Eigenvalues("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>eigenvalues() takes a matrix as its argument.  If the<B></B>
+<B></B>argument matrix is not square, a CVMError is thrown.  eigenvalues()<B></B>
+<B></B>returns a n X 1 matrix (a column vector, not to be confused with the<B></B>
+<B></B>included Vector classes) of which each element is an eigenvalue of<B></B>
+<B></B>the argument matrix.  Note that this returned matrix is always<B></B>
+<B></B>complex, and that eigenvalues() will find both complex and real<B></B>
+<B></B>eigenvalues.  The eigenvalues() algorithm is iterative, so use<B></B>
+<B></B><a href="#get_iter(">set_iter(</a>) as needed.  Also, the algorithm terminates when it creates<B></B>
+<B></B>an upper triangular matrix (that is almost true).  So use set_tol()<B></B>
+<B></B>as necessary to change what is considered an upper triangular matrix<B></B>
+<B></B>(when entries should be considered zero).  If the alogrithm fails to<B></B>
+<B></B>converge, a CVMError will be thrown.  eigenvalues() does check all<B></B>
+<B></B>computed eigenvalues prior to returning and sets any of them to zero<B></B>
+<B></B>if they are considered equal to zero under the current setting of the<B></B>
+<B></B>appropriate tolerance variable (see <a href="#get_float_tol(">set_float_tol(</a>) and<B></B>
+<B></B><a href="#get_double_tol(">set_double_tol(</a>)).  This seems to improve accuracy.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Eigenvectors() eigenvectors()</FONT></FONT></P><B></B>
+<a name="Eigenvectors("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>eigenvectors()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>eigenvectors(matrix, eigenvalues*) computes the<B></B>
+<B></B>eigenvectors of the argument “matrix”.  The second argument,<B></B>
+<B></B>“eigenvalues” is optional.  If provided, it must be a pointer to<B></B>
+<B></B>an n X 1 matrix that contains the eigenvalues of argument “matrix”.<B></B>
+<B></B> If you have already computed the eigenvalues you should pass this<B></B>
+<B></B>argument as it will save computation.  eigenvectors() returns a<B></B>
+<B></B>complex matrix such that each row is an eigenvector of the argument<B></B>
+<B></B>“matrix”.  These eigenvectors are ordered such that the<B></B>
+<B></B>eigenvector in the ith row of the returned matrix corresponds to the<B></B>
+<B></B>eigenvalue in the ith row of the matrix pointed to by the<B></B>
+<B></B>“eigenvalues” parameter or the eigenvalues matrix returned by the<B></B>
+<B></B>eigenvalues() function (if you  do not give a second argument).  If<B></B>
+<B></B>you pass incorrect eigenvalues to this function, it will still return<B></B>
+<B></B>correct eigenvectors, but there may be duplicated, some may be<B></B>
+<B></B>missing, and the function may not converge as it is iterative.  As<B></B>
+<B></B>the function is iterative, it does use the iters parameter (see<B></B>
+<B></B><a href="#get_iter(">set_iter(</a>)); however, this algorithm usually has no problem<B></B>
+<B></B>converging (if it did not converge it would throw a CVMError).  If<B></B>
+<B></B>the argument “matrix” is not square, a CVMError is thrown.  This<B></B>
+<B></B>function calls eigenvalues() if you do not specify a second argument,<B></B>
+<B></B>so look at that and set_tol().  Also, if the eigenvalues parameter<B></B>
+<B></B>does not point to a matrix of the appropriate size, a CVMError is<B></B>
+<B></B>thrown.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Eye() eye()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>eye()</B></FONT></P><B></B>
+<a name="Eye("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Every matrix class includes a static member function<B></B>
+<B></B>eye(size) that returns the size X size identity matrix.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Fill() fill()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>fill()</B></FONT></P><B></B>
+<a name="Fill("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>fill(value) is a member function that fills the entire<B></B>
+<B></B>matrix with value.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Frobenius() frobenius()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>frobenius()</B></FONT></P><B></B>
+<a name="Frobenius("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>frobenius() is a member function that returns the<B></B>
+<B></B>frobenius norm of the calling matrix.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR get_double_tol() set_double_tol()</FONT></FONT></P><B></B>
+<a name="get_double_tol("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>get_double_tol()<B></B>
+<B></B>set_double_tol()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>These functions play the same roles as <a href="#get_float_tol(">get_float_tol(</a>)<B></B>
+<B></B>and <a href="#get_float_tol(">set_float_tol(</a>) except they modify the behavior of the double and<B></B>
+<B></B>long double matrix classes.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR get_float_tol() set_float_tol()</FONT></FONT></P><B></B>
+<a name="get_float_tol("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>get_float_tol()<B></B>
+<B></B>set_float_tol()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>These functions set or get the tolerance that is<B></B>
+<B></B>associated with the FloatMatrix and FloatComplexMatrix classes.  This<B></B>
+<B></B>tolerance is used in the following manner:  If two floating point<B></B>
+<B></B>values are tested for equality (usually we are testing == 0) they are<B></B>
+<B></B>considered equal if the smallest relative error possible (if it is<B></B>
+<B></B>true that the two are in fact equal) is less than the tolerance.  The<B></B>
+<B></B>exception to this is if the absolute error is less than the relative<B></B>
+<B></B>error, then two numbers are considered equal if the absolute error is<B></B>
+<B></B>less than the tolerance.  These functions are not members of any<B></B>
+<B></B>class as the tolerance variable is global to the Float&lt;Complex&gt;Matrix<B></B>
+<B></B>classes.  The are several functions which use this tolerance value<B></B>
+<B></B>(mainly eigenvalues()), and it will be stated in the description for<B></B>
+<B></B>those functions.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR get_iter() set_iter()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>get_iter()<B></B>
+<a name="get_iter("></a>
+<B></B>and set_iter()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Each matrix type has its own static member variable<B></B>
+<B></B>“iter” which specifies the maximum number of times for the<B></B>
+<B></B>eigenvalues() and eigenvectors() functions to iterate before giving<B></B>
+<B></B>up.  get_iter() and set_iter() are accessor and mutator functions<B></B>
+<B></B>respectively for this static member variable.  The default value is<B></B>
+<B></B>100.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Hessenberg() hessenberg()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>hessenberg()</B></FONT></P><B></B>
+<a name="Hessenberg("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>hessenberg() takes a matrix as its argument.  It returns<B></B>
+<B></B>a matrix which is the argument matrix converted to hessenberg form<B></B>
+<B></B>(all entries are zero below the first subdiagonal).  The argument<B></B>
+<B></B>matrix is not modified in any way.  This function is mainly used by<B></B>
+<B></B>the eigenvalues() function as a matrix and its hessenberg form have<B></B>
+<B></B>the same eigenvalues.  hessenberg() will throw a CVMError if the<B></B>
+<B></B>argument matrix is not square.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Infnorm() infnorm()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>infnorm()</B></FONT></P><B></B>
+<a name="Infnorm("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>infnorm() is a member function that returns the infinite<B></B>
+<B></B>norm of the calling matrix.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Inverse() inverse()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>inverse()</B></FONT></P><B></B>
+<a name="Inverse("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>inverse() behaves the same as <a href="#Invert(">invert(</a>) except that it<B></B>
+<B></B>returns the inverse as a new new matrix and does not modify the<B></B>
+<B></B>calling object (and thus does not return a reference).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Invert() invert()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>invert()</B></FONT></P><B></B>
+<a name="Invert("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>invert() is a member function that inverts the calling<B></B>
+<B></B>matrix object.  Note that this does modify the calling object (and<B></B>
+<B></B>thus returns a reference.  If you wish to compute the inverse without<B></B>
+<B></B>modifying the calling object use inverse().  A CVMError will occur if<B></B>
+<B></B>the calling matrix object is not square or if the matrix is singular<B></B>
+<B></B>(in which case <a href="#Solve(">solve(</a>) will actually end up throwing the error).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Is_symmetric() is_symmetric()</FONT></FONT></P><B></B>
+<a name="Is_symmetric("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>is_symmetric()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>is_symmetric() is a member function that return true or<B></B>
+<B></B>false depending on whether the calling object is a symmetric matrix. <B></B>
+<B></B>Note that strict equality is used (in this case) even for floating<B></B>
+<B></B>point numbers.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR LU()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>LU()</B></FONT></P><B></B>
+<a name="LU("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">LU()<B></B>
+<B></B>takes a matrix as its argument.  It returns the LU decomposition of<B></B>
+<B></B>the argument such that argument = L * U.  Note that LU will throw a<B></B>
+<B></B>CVMError if the argument is not a square matrix.  A CVMError will<B></B>
+<B></B>also be thrown if the matrix is not LU-factorable, that is the<B></B>
+<B></B>argument matrix will not be permuted to make it LU-factorable (see<B></B>
+<B></B><a href="#PLU(">PLU(</a>) below).  LU() returns the matrix L | U.  </SPAN><B>From now on<B></B>
+<B></B>the notation L | U will represent the matrix that is L augmented by U<B></B>
+<B></B>(see <a href="#Augment(">augment(</a>) above).</B></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR max_col_index() min_col_index()</FONT></FONT></P><B></B>
+<a name="max_col_index("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>max_col_index()<B></B>
+<B></B>and min_col_index()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>max_col_index() and min_col_index() behave the same as<B></B>
+<B></B><a href="#max_row_index(">max_row_index(</a>) and <a href="#max_row_index(">min_row_index(</a>) except they deal with columns. <B></B>
+<B></B>Note that complex matrix classes do not have these functions.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR max_row_index() min_row_index()</FONT></FONT></P><B></B>
+<a name="max_row_index("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>max_row_index()<B></B>
+<B></B>and min_row_index()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>max_row_index(row) and min_row_index(row) are member<B></B>
+<B></B>functions that return the zero based index of the maximum or minimum<B></B>
+<B></B>value in the desired row of the calling object.  If the row requested<B></B>
+<B></B>is out of bounds a CVMError is thrown.  Note that complex matrix<B></B>
+<B></B>classes do not have these functions.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR min() max()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>min()<B></B>
+<a name="min("></a>
+<B></B>and max()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>min() and max() are member functions that return the<B></B>
+<B></B>value of the smallest or largest valued element of the calling matrix<B></B>
+<B></B>respectively.  Note that complex matrix classes do not have these<B></B>
+<B></B>functions.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Mulrow() mulrow()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>mulrow()</B></FONT></P><B></B>
+<a name="Mulrow("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>mulrows(row, coeff) is a member function that muliplies<B></B>
+<B></B>row by coeff.  This function returns a reference to the calling<B></B>
+<B></B>object.  If any indexes are out of bounds, a CVMError is thrown. <B></B>
+<B></B>Note that this function uses zero based indexes.  There is also a<B></B>
+<B></B>non-member version of this function that takes a matrix as its first<B></B>
+<B></B>argument.  It returns the reultant matrix, but does not modify its<B></B>
+<B></B>argument.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Multiply() multiply()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>multiply()</B></FONT></P><B></B>
+<a name="Multiply("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">multiply()<B></B>
+<B></B>is a member function that takes another matrix as its argument. <B></B>
+<B></B>multiply() does element-wise multiplication.  That is, calling<B></B>
+<B></B>object[row][col] *= argument[row][col].  This function returns a<B></B>
+<B></B>reference to the calling (changed) object. </SPAN><B> Please note<B></B>
+<B></B>that from now on it will be implicit that any member functions which<B></B>
+<B></B>change the calling object return references to that object.  </B><SPAN STYLE="font-weight: medium">The<B></B>
+<B></B>calling object and the argument matrix need to be the same size or a<B></B>
+<B></B>CVMError is thrown.  There is also a non-member version of this<B></B>
+<B></B>function that takes two matrices.  The resultant matrix is returned,<B></B>
+<B></B>but neither argument is modified.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Onenorm() onenorm()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>onenorm()</B></FONT></P><B></B>
+<a name="Onenorm("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>onenorm() is a member functions that returns the<B></B>
+<B></B>one-norm of the calling matrix.  (two-norms are explained later).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Part() part()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>part()</B></FONT></P><B></B>
+<a name="Part("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">part(starting<B></B>
+<B></B>row, starting col, ending row, ending col) is a member function that<B></B>
+<B></B>returns a matrix which is the rectangular submatrix of the calling<B></B>
+<B></B>object that includes the elements between (starting row, starting<B></B>
+<B></B>col) and (ending row, ending col) inclusive.  </SPAN><B>These<B></B>
+<B></B>parameters are zero based indexes.</B><SPAN STYLE="font-weight: medium"><B></B>
+<B></B> part() will throw a CVMError if any of the indexes are out of<B></B>
+<B></B>bounds.  The calling object is not changed in any way.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR PLU()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>PLU()</B></FONT></P><B></B>
+<a name="PLU("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>PLU() takes a matrix as its argument.  It returns the LU<B></B>
+<B></B>decomposition of the argument such that P * argument = L * U, where P<B></B>
+<B></B>is a permutation matrix.  Note that PLU() with throw a CVMError if<B></B>
+<B></B>the argument is not a square matrix.  A CVMError is also thrown if<B></B>
+<B></B>the argument matrix is singular.  For all nonsingular matrices, PLU()<B></B>
+<B></B>will succeed.  PLU() returns the matrix P | L | U.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Pow() pow()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>pow()</B></FONT></P><B></B>
+<a name="Pow("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>pow(matrix, power) is a function that returns “matrix”<B></B>
+<B></B>raised to the “power” power.  “power” can be any real or<B></B>
+<B></B>complex number as pow always returns a complex matrix anyway.  Pow()<B></B>
+<B></B>will throw a CVMError if “matrix” is not a square matrix.  Note<B></B>
+<B></B>that pow() calls eigenvalues(), eigenvectors(), and <a href="#Solve(">solve(</a>).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Power() power()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>power()</B></FONT></P><B></B>
+<a name="Power("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>power() is a member function with the same semantics as<B></B>
+<B></B>multiply() (see above) except that the computation done is calling<B></B>
+<B></B>object[row][col] = pow(calling object[row][col], argument[row][col]).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR QR()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>QR()</B></FONT></P><B></B>
+<a name="QR("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>QR() takes a matrix as its argument.  QR() returns the<B></B>
+<B></B>QR factorization of the argument matrix, where argument = Q * R. <B></B>
+<B></B>When factoring an m X n matrix, QR() factors the argument into Q<B></B>
+<B></B>which is m X m and R which is m X n.  QR() returns Q | R.  Before<B></B>
+<B></B>returning QR() looks for elements of the resultant matrix that are<B></B>
+<B></B>close to zero.  If the elements are considered zero by the current<B></B>
+<B></B>setting of float_tol or double_tol, they will be set to zero (see<B></B>
+<B></B>set_float_tol() etc.).  This is mainly to improve the performance of<B></B>
+<B></B>the eigenvalues() function.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Read() read()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>read()</B></FONT></P><B></B>
+<a name="Read("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>read(fstream, matrix) takes an fstream and a matrix.  It<B></B>
+<B></B>reads a matrix into the matrix variable from the binary fstream.  The<B></B>
+<B></B>matrix variable will be resized if necessary.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Resize() resize()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>resize(rows,<B></B>
+<a name="Resize("></a>
+<B></B>cols)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>resize() is a member function that resize the given<B></B>
+<B></B>matrix to the indicated size.  Matrix elements are kept intact when<B></B>
+<B></B>possible.  New elements are initialized to zero.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR rows() cols()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>rows()<B></B>
+<a name="rows("></a>
+<B></B>and cols()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">rows()<B></B>
+<B></B>and cols() are member functions which return the number of rows and<B></B>
+<B></B>the number of columns in the matrix respectively.  </SPAN><B>rows()<B></B>
+<B></B>and cols() return the actual number of rows and columns, not the<B></B>
+<B></B>maximum zero based index.</B></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR set_width() get_width()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>set_width()<B></B>
+<a name="set_width("></a>
+<B></B>and get_width()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>set_width(new width) and get_width are static member<B></B>
+<B></B>functions.  Each matrix type has its own set_width() and get_width. <B></B>
+<B></B>These functions are accessor and mutator functions for “width”<B></B>
+<B></B>which is a static class variable.  Basically when a matrix is being<B></B>
+<B></B>output with the output operator, a setw() is inserted in the output<B></B>
+<B></B>stream directly before outputting each matrix element.  This width<B></B>
+<B></B>becomes the argument of that setw() function.  The default value of<B></B>
+<B></B>“width” is 8.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Solve() solve()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>solve()</B></FONT></P><B></B>
+<a name="Solve("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>solve() takes a matrix as its argument.  solve() solves<B></B>
+<B></B>the equation A * x = rhs (where x and rhs are n X 1 matrices).  The<B></B>
+<B></B>matrix argument is an augmented matrix such that the rightmost column<B></B>
+<B></B>is the right hand side of the system of linear equations (A | rhs). <B></B>
+<B></B>solve() will throw a CVMError if the linear system does not have a<B></B>
+<B></B>unique solution.  Solve() returns x as an n X 1 matrix.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Sqrt() sqrt()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>sqrt()</B></FONT></P><B></B>
+<a name="Sqrt("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">sqrt()<B></B>
+<B></B>takes a matrix as its argument and returns the actual square root of<B></B>
+<B></B>the matrix, that is a new matrix such that matrix multiplication of<B></B>
+<B></B>itself by itself would be equal to the argument to the sqrt()<B></B>
+<B></B>function.  </SPAN><B>Note that this function any many to follow call<B></B>
+<B></B>other functions and therefore can throw CVMErrors through the other<B></B>
+<B></B>functions they call.  Always check the documentation for the other<B></B>
+<B></B>functions to see what CVMErrors they throw.  </B><SPAN STYLE="font-weight: medium">In<B></B>
+<B></B>this case sqrt() calls pow().  Please note that sqrt() always returns<B></B>
+<B></B>a complex matrix.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Stack() stack()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>stack()</B></FONT></P><B></B>
+<a name="Stack("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>stack() is a member function that takes another matrix<B></B>
+<B></B>as its argument.  stack() actually stacks the calling object matrix<B></B>
+<B></B>on top of the argument matrix (the matrix that is changed is the<B></B>
+<B></B>calling object).  These two matrices must have the same number of<B></B>
+<B></B>columns or a CVMError object will be thrown.  stack() returns a<B></B>
+<B></B>reference to the calling object.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR sumrow() sumcol()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>sumrow()<B></B>
+<a name="sumrow("></a>
+<B></B>and sumcol()</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>sumrow(row) and sumcol(col) are member functions that<B></B>
+<B></B>return the sum of all of the elements in the specified row (or<B></B>
+<B></B>column) of the calling matrix.  If the row (or column) specified is<B></B>
+<B></B>out of bounds, a CVMError is thrown.  There are also non-member<B></B>
+<B></B>versions of these functions that take a matrix as their first<B></B>
+<B></B>arguments.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Swaprow() swaprow()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>swaprow()</B></FONT></P><B></B>
+<a name="Swaprow("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">swaprow(row<B></B>
+<B></B>a, row b) is a member function that swaps rows a and b of the calling<B></B>
+<B></B>object.  This function returns a reference to the calling object.  If<B></B>
+<B></B>any indexes are out of bounds, a CVMError is thrown.  </SPAN><B>From<B></B>
+<B></B>now on understand that any functions which take row indexes or column<B></B>
+<B></B>indexes use zero based indexes.  </B><SPAN STYLE="font-weight: medium">There<B></B>
+<B></B>is also a non-member version of this function that takes a matrix as<B></B>
+<B></B>its first argument.  It returns the resultant matrix, but does not<B></B>
+<B></B>modify its argument.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR T() t()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>t()</B></FONT></P><B></B>
+<a name="T("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>t() is a member function that returns the transpose of<B></B>
+<B></B>the matrix.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Trace() trace()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>trace()</B></FONT></P><B></B>
+<a name="Trace("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>trace() is a function that takes a matrix as its<B></B>
+<B></B>argument.  It returns the trace (the sum of the elements on the main<B></B>
+<B></B>diagonal) of the matrix.  This function will throw a CVMError if the<B></B>
+<B></B>matrix is not square.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Twonorm() twonorm()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>twonorm()</B></FONT></P><B></B>
+<a name="Twonorm("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>twonorm() is a member function that returns the two-norm<B></B>
+<B></B>of the calling matrix object.  twonorm() does call eigenvalues().</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Write() write()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>write()</B></FONT></P><B></B>
+<a name="Write("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>write(fstream, matrix) takes an fstream and a matrix. <B></B>
+<B></B>It writes the matrix to the binary fstream.  Size information is<B></B>
+<B></B>stored with the matrix element data.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Integer<B></B>
+<B></B>Matrix Types</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The integer matrix types behave in much the same way as<B></B>
+<B></B>the above mentioned floating point matrix types; however, they are<B></B>
+<B></B>very restricted.  The following functions are not available to<B></B>
+<B></B>integer matrix types (they would have to be cast to a floating point<B></B>
+<B></B>matrix type):</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>any norms</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>(scalar) / (matrix)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#norm(">abs(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Det(">det(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Eigenvalues(">eigenvalues(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Eigenvectors(">eigenvectors(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Hessenberg(">hessenberg(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Inverse(">inverse(</a>) / <a href="#Invert(">invert(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#LU(">LU(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#PLU(">PLU(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Pow(">pow(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Power(">power(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#QR(">QR(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Solve(">solve(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Sqrt(">sqrt(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Floating<B></B>
+<B></B>Point Vector Types</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><B>The<B></B>
+<B></B>most important thing to understand about vectors is that they are<B></B>
+<B></B>matrices.  </B><SPAN STYLE="font-weight: medium">In fact the vector<B></B>
+<B></B>classes are derived from the matrix classes.  This means that vectors<B></B>
+<B></B>will behave as matrices when necessary.  Although operations on<B></B>
+<B></B>vectors will return vector types whenever the result is still a<B></B>
+<B></B>vector.  There are some functions which have been overloaded to give<B></B>
+<B></B>slightly different operation for vectors.  Those will be described<B></B>
+<B></B>below.  There are also some functions that cannot be used on vectors:</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#addcol(">addcol(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Addrow(">addrow(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Augment(">augment(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#addcol(">mulcol(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Mulrow(">mulrow(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Resize(">resize(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Stack(">stack(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>swapcol()</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Swaprow(">swaprow(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><SPAN STYLE="font-weight: medium">This<B></B>
+<B></B>points out the second most important thing about the vector classes. <B></B>
+<B></B></SPAN><B>Vectors cannot be resized, and will not resize<B></B>
+<B></B>automatically upon assignment as the matrix classes will.</B><SPAN STYLE="font-weight: medium"><B></B>
+<B></B> </SPAN></FONT></FONT></SPAN><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Constructors</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The vector classes have a default constructor that<B></B>
+<B></B>creates a 1-vector.  This is almost certainly not what you want since<B></B>
+<B></B>vectors cannot be resized.  There is also an explicit constructor<B></B>
+<B></B>which takes as an argument the integer size of the vector.  Vectors<B></B>
+<B></B>can also be created from other vector types as long as the conversion<B></B>
+<B></B>is upward (see complex numbers: constructors and floating point<B></B>
+<B></B>matrix types: constructors).</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000"><B>Vectors<B></B>
+<B></B>are row vectors</B><SPAN STYLE="font-weight: medium">.  This means<B></B>
+<B></B>that if you are doing math with the assumption that they are column<B></B>
+<B></B>vectors, you will need to use the transpose function as necessary.</SPAN></FONT></FONT></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>*</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The multiplication operator performs the dot product of<B></B>
+<B></B>two vectors.  If they are not of the same size, a CVMError will be<B></B>
+<B></B>thrown.  Note that since vectors are matrices, matrix-matrix,<B></B>
+<B></B>vector-matrix, matrix-vector, and vector-vector multiplication all<B></B>
+<B></B>work correctly just by using the multiplication operator as the<B></B>
+<B></B>meaning can be inferred by the compiler.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>&gt;&gt;</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The input operator works slightly differently with<B></B>
+<B></B>vectors.  Since vectors cannot be resize, there is no need to enter<B></B>
+<B></B>the vector size.  The input operator just accepts as many values as<B></B>
+<B></B>will fit in the vector given its current (and final) size.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>operator<B></B>
+<B></B>[]</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>The subscript operator returns a reference to the<B></B>
+<B></B>desired element of the vector.  Indexes are zero based.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>A CVMError will be thrown if the index is out of bounds.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Angle() angle()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>angle()</B></FONT></P><B></B>
+<a name="Angle("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>angle(vector a, vector b) returns the angle (in radians)<B></B>
+<B></B>between the two vectors.  If the vectors are not the same size, a<B></B>
+<B></B>CVMError is thrown.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Cross() cross()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>cross()</B></FONT></P><B></B>
+<a name="Cross("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>cross(vector a, vector b) returns the cross product a X<B></B>
+<B></B>b.  If a and b are not both three-dimensional a CVMError will be<B></B>
+<B></B>thrown.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B><a href="#Infnorm(">infnorm(</a>)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Infnorm(">infnorm(</a>) is a member function that returns the infinity<B></B>
+<B></B>norm of the calling vector object.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Length() length()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>length()</B></FONT></P><B></B>
+<a name="Length("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>length() is a member function that returns the 2-norm of<B></B>
+<B></B>the calling vector object.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Outer() outer()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>outer()</B></FONT></P><B></B>
+<a name="Outer("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">outer(vector<B></B>
+<B></B>a, vector b) returns the outer product of a and b (it’s a matrix)! <B></B>
+<B></B>If the vectors are not of the same size, a CVMError will be thrown. <B></B>
+<B></B>Note that since vectors are implemented as row vectors this actually<B></B>
+<B></B>computer a<SUP>T</SUP> * b.</FONT></FONT></SPAN></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Pnorm() pnorm()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>pnorm()</B></FONT></P><B></B>
+<a name="Pnorm("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>pnorm(int) is a member function that returns the p-norm<B></B>
+<B></B>of the calling vector object.  The integer argument must be positive<B></B>
+<B></B>(it is unsigned as almost all integers are in this entire library). <B></B>
+<B></B>If you specify a zero, you will get division by zero.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B><a href="#Read(">read(</a>)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>read(fstream, vector) takes an fstream and a vector.  It<B></B>
+<B></B>reads a vector into the vector variable from the binary fstream.  If<B></B>
+<B></B>the size of the vector variable does no match the size of the vector<B></B>
+<B></B>being a read, a CVMError is thrown.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT COLOR="#ffffff"><FONT SIZE=3>ANCHOR Size() size()</FONT></FONT></P> <P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>size()</B></FONT></P><B></B>
+<a name="Size("></a>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>size() is a member function that will return the size,<B></B>
+<B></B>n, of the vector.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B><a href="#Write(">write(</a>)</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>write(fstream, vector) takes an fstream and a vector. <B></B>
+<B></B>It writes the vector to the binary fstream.  Size information is<B></B>
+<B></B>stored along with the vector element data.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Integer<B></B>
+<B></B>Vector Types</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Integer vector types behave roughly the same as the<B></B>
+<B></B>floating point vector types; however, they are more restricted.  They<B></B>
+<B></B>are derived from the integer matrix types so you may want to look at<B></B>
+<B></B>the section on those.  The following functions are not available for<B></B>
+<B></B>the integer matrix types:</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#norm(">abs(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Angle(">angle(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Infnorm(">infnorm(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Length(">length(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Pnorm(">pnorm(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3><a href="#Power(">power(</a>)</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>and the ones listed as being unavailable to integer<B></B>
+<B></B>matrix types.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Other<B></B>
+<B></B>thoughts</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>If you specify a zero size for a row, column, or a<B></B>
+<B></B>vector in constructors, resize, eye, or diag, the number one will be<B></B>
+<B></B>used in place of your zero.  Matrix (or vector) types for a given<B></B>
+<B></B>operation must match.  That means that adding a DoubleMatrix to an<B></B>
+<B></B>IntMatrix will convert the IntMatrix to a DoubleMatrix.  Thus, the<B></B>
+<B></B>result of the operation will be a DoubleMatrix.  Since the []<B></B>
+<B></B>operator returns references for both the matrix classes and the<B></B>
+<B></B>vectors classes it cannot be used on temporary return values (as they<B></B>
+<B></B>are const).  Therefore things like b =  (a.<a href="#T(">t(</a>))[1] will not work. <B></B>
+<B></B>Instead something like:</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>temp = a.<a href="#T(">t(</a>);</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>b = temp[1];</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>should be used.  Vectors will behave as matrices when<B></B>
+<B></B>need be since they are matrices.  However, matrices are not vectors<B></B>
+<B></B>even if they only have a single row.  To make them behave as vectors<B></B>
+<B></B>use the [] operator which returns a vector reference to the specified<B></B>
+<B></B>row (probably 0).  As it was needed in the writing of this library<B></B>
+<B></B>and is somewhat useful a global function sign() is included.  It<B></B>
+<B></B>takes a real value as an argument and returns 1 if the value is &gt;=<B></B>
+<B></B>0, otherwise it returns -1.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Tips<B></B>
+<B></B>and Suggestions</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>Many of my programs start of with:</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>FloatComplex i(0, 1);</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>That way I can use i just as you would in normal math. <B></B>
+<B></B>I normally use the type FloatComplex (as long as I am doing floating<B></B>
+<B></B>point operations) because a FloatComplex can automatically be<B></B>
+<B></B>converted to a DoubleComplex or a LongDoubleComplex (upwards only). <B></B>
+<B></B>Use <a href="#Inverse(">inverse(</a>) instead of pow(matrix, -1).  it is much faster and more<B></B>
+<B></B>stable.  When doing anything that involves eigenvalue computation<B></B>
+<B></B>(such as using <a href="#Pow(">pow(</a>)) it is recommended that you use higher precision<B></B>
+<B></B>matrix types.  The problem is that larger matrices introduce more<B></B>
+<B></B>roundoff error during the <a href="#Eigenvalues(">eigenvalues(</a>) function to the point where<B></B>
+<B></B>it may not converge for less precise types (namely float).  On a<B></B>
+<B></B>related note when using <a href="#Eigenvalues(">eigenvalues(</a>) on larger matrices (even long<B></B>
+<B></B>double ones), you may find that you need to increase the maximum<B></B>
+<B></B>number of iterations, the associated tolerance, or both to make the<B></B>
+<B></B>function converge.  So it may be useful to try the <a href="#Eigenvalues(">eigenvalues(</a>) (or<B></B>
+<B></B><a href="#Pow(">pow(</a>)) function call inside a try block.  That way if it fails, you<B></B>
+<B></B>can increment the tolerance or the maximum number of iterations and<B></B>
+<B></B>try again (I recommend doubling one or the other (maybe alternate<B></B>
+<B></B>between them)).  The biggest problem is that even using long double<B></B>
+<B></B>matrix types, trying to call <a href="#Eigenvalues(">eigenvalues(</a>) or <a href="#Pow(">pow(</a>) on matrices<B></B>
+<B></B>larger than say 75 X 75 is basically destined to fail without<B></B>
+<B></B>ridiculous settings for tolerance and iterations.  I’d love to make<B></B>
+<B></B>it better (see the feedback section and the future directions section<B></B>
+<B></B>below).  I also recommend that you compile with -O3 if you are using<B></B>
+<B></B>g++ (gcc) and not using ./configure etc...</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Future<B></B>
+<B></B>Directions</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>There are several things that are in the back of my mind<B></B>
+<B></B>as far as the future of this library is concerned.  I may introduce<B></B>
+<B></B>multiple-precision (or arbitrary precision) types.  This may help to<B></B>
+<B></B>alleviate the eigenvalues problem (see above).  More optimization can<B></B>
+<B></B>always be done on any code.  Also, as I stated in the overview, I<B></B>
+<B></B>would love to add tensor capacity.  Finally, I have toyed with the<B></B>
+<B></B>idea of adding sparse matrix capabilities to the library.  It would<B></B>
+<B></B>have to be done in such a manner that the user interface would remain<B></B>
+<B></B>the same, but the underlying class would decided which representation<B></B>
+<B></B>would be more efficient and call the appropriate versions of the<B></B>
+<B></B>available functions.  All of these things sound great, and they would<B></B>
+<B></B>probably be a lot of fun to write.  However, there are also other<B></B>
+<B></B>things I would like to work on.  If I get enough feedback, I will<B></B>
+<B></B>implement more features.  </FONT><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Feedback</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">Please<B></B>
+<B></B>provide feedback.  Any problems, questions, or suggestions are<B></B>
+<B></B>welcome.  Email me at </FONT></FONT></SPAN></SPAN><FONT COLOR="#000080"><U><A HREF="mailto:jasonar81@yahoo.com"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3>jasonar81@yahoo.com</FONT></SPAN></SPAN></A></U></FONT><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">.</FONT></FONT></SPAN></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>License</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>You are free to do whatever you want with this software.<B></B>
+<B></B> There is no warranty of any sort.  It would be appreciated if<B></B>
+<B></B>improvements would be relayed back to me.  You will be credited for<B></B>
+<B></B>your work.</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>About<B></B>
+<B></B>Me</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">This<B></B>
+<B></B>library was written by me, Jason Arnold.  I am currently working on a<B></B>
+<B></B>Masters in Computer Science at DePaul University in Chicago.  I have<B></B>
+<B></B>a Bachelors in Math and a Bachelors in Computer Science both from<B></B>
+<B></B>Northern Illinois University.  My email address is<B></B>
+<B></B></FONT></FONT></SPAN></SPAN><FONT COLOR="#000080"><U><A HREF="mailto:jasonar81@yahoo.com"><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3>jasonar81@yahoo.com</FONT></SPAN></SPAN></A></U></FONT><SPAN STYLE="font-weight: medium"><SPAN LANG="en-US"><FONT SIZE=3><FONT COLOR="#000000">.</FONT></FONT></SPAN></SPAN></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in"><FONT SIZE=3><B>Example</B></FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>#include “cvm.h”</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>using std::cout;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>int main()</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>{</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	FloatComplex i(0, 1); //create i</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	IntMatrix im(5, 5); //create a 5 X 5 matrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	im.fill(9); //fill it with 9’s</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	DoubleComplexMatrix dcm = DoubleComplexMatrix::eye(5);<B></B>
+<B></B>//create a 5 X 5 identity matrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	LongDoubleComplexMatrix ldcm; //create another matrix</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	ShortVector sv(5); //create a 5-vector</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	sv[0] = 1;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	sv[1] = 2;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	sv[2] = 3;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	sv[3] = 4;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	sv[4] = 5;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	ldcm = (9 + i) * (sv * (im * dcm)); //ldcm will<B></B>
+<B></B>automatically resize to 1 X 5</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	cout &lt;&lt; ldcm &lt;&lt; endl;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>	return 0;</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><FONT SIZE=3>}</FONT></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+<B></B><P CLASS="western" ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><B></B>
+<B></B><BR><B></B>
+<B></B></P><B></B>
+</BODY>
+</HTML>
