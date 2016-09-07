@@ -1,0 +1,3 @@
+[submodule "Gui3DQt"]
+	path = libGui3DQt/Gui3DQt
+	url = https://github.com/FrankMoosmann/Gui3DQt.git
