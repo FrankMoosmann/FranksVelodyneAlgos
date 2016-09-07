@@ -678,13 +678,13 @@ TrackRegistration::SubTrackSPtr TrackRegistration::generate(PointCloudTrack::SPt
 bool pixValid(int col, int row, FrameSPtr cf, double maxDist)
 {
   LidarFrame::TrackIndex ti = cf->projLttTracks.get(col, row);
-  assert(!isnan(cf->distance.get(col, row)) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->point3D.get(col, row)[0]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->point3D.get(col, row)[1]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->point3D.get(col, row)[2]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->normal3D.get(col, row)[0]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->normal3D.get(col, row)[1]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
-  assert(!isnan(cf->normal3D.get(col, row)[2]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->distance.get(col, row)) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->point3D.get(col, row)[0]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->point3D.get(col, row)[1]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->point3D.get(col, row)[2]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->normal3D.get(col, row)[0]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->normal3D.get(col, row)[1]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
+  assert(!std::isnan(cf->normal3D.get(col, row)[2]) && "TrackRegistration::generateFromWorld: unexpected nan in cf->distance");
   return    (cf->distance.get(col, row) < maxDist)
          && ((ti == UINT_MAX) || (ti == 0));
 }

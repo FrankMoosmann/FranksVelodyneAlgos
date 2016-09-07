@@ -17,7 +17,7 @@ class PngDistanceImage
 private:
   png::image<png::gray_pixel_16> image; //!< image that holds all the data and that implements save/load as PNG file
   static const png::gray_pixel_16 maxPix = 65535; // maximum coded distance value, should always be max of 16bit, thus equal to std::numeric_limits<png::gray_pixel_16>::max();
-  static const double default_multiplier = 500.0; //!< multiplier to turn floating point distance values into discrete pixel values. chosen in a way that all occuring distances can be coded but resolution is still as high as possible, 1/500 = 2mm resolution
+  static constexpr double default_multiplier = 500.0; //!< multiplier to turn floating point distance values into discrete pixel values. chosen in a way that all occuring distances can be coded but resolution is still as high as possible, 1/500 = 2mm resolution
   double multiplier; //!< multiplier to turn floating point distance values into discrete pixel values. chosen in a way that all occuring distances can be coded but resolution is still as high as possible, 1/500 = 2mm resolution
   double maxDst; //!< maximum distance possible to store, equal to ((double)maxPix)/multiplier
   png::gray_pixel_16 dist2PixVal(double distance) { if ((distance > maxDst) || (distance < 0.0)) distance = 0.0; return png::gray_pixel_16(distance*multiplier);};

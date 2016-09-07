@@ -214,7 +214,7 @@ void minimum(const LidarImage<T> &data1, const LidarImage<T> &data2, LidarImage<
   typename LidarImage<T>::iterator dtIt = target.begin();
   typename LidarImage<T>::iterator dtEnd = target.end();
   while ((d1It != d1End) && (d2It != d2End) && (dtIt != dtEnd)) {
-    *dtIt = min(*d1It, *d2It);
+    *dtIt = std::min(*d1It, *d2It);
     ++d1It;
     ++d2It;
     ++dtIt;

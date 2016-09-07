@@ -407,7 +407,7 @@ void LidarImageFeatures::transformTo3D(
           pointVariance3D->set(col, row, DMatrix(3,3, 0.0));
       } else {
         projector.get3DCoordRel(col, row, distanceImage.get(col, row), pt);
-        if (isnan(pt(0)) || isnan(pt(1)) || isnan(pt(2))) {
+        if (std::isnan(pt(0)) || std::isnan(pt(1)) || std::isnan(pt(2))) {
           cerr << endl << "col " << col << " row " << row << " dist " << distanceImage.get(col, row)
               << " was transformed to NAN" << flush;
           point3D.set(col, row, DVector(3, DBL_MAX));
@@ -647,14 +647,20 @@ void LidarImageFeatures::normals(const LidarImage<double> &distanceImage, const 
           pin[4][2] = pin[0][2];
         }
         if (connWeightsH && connWeightsV) {
-          wi = { 0.0, 0.0, 0.0, 0.0, 0.0 };
+          for( int fill_idx = 0; fill_idx < 5; ++fill_idx )
+          {
+            wi[fill_idx] = 0.0;
+          }
           if (bi[0]) wi[0] = (di[0] > d + DIST_DIFF) ? W_FAC_CREATE : connWeightsH->get(col, row); // to the right
           if (bi[1]) wi[1] = (di[1] > d + DIST_DIFF) ? W_FAC_CREATE : connWeightsV->get(col, row - 1); // to the top
           if (bi[2]) wi[2] = (di[2] > d + DIST_DIFF) ? W_FAC_CREATE : connWeightsH->get(col - 1, row); // to the left
           if (bi[3]) wi[3] = (di[3] > d + DIST_DIFF) ? W_FAC_CREATE : connWeightsV->get(col, row); // to the bottom
           wi[4] = wi[0];
         } else {
-          wi = { 1.0, 1.0, 1.0, 1.0, 1.0 };
+          for( int fill_idx = 0; fill_idx < 5; ++fill_idx )
+          {
+            wi[fill_idx] = 1.0;
+          }
         }
         sumcpw = wi[0] + wi[1] + wi[2] + wi[3];
       } // end: gather neighbor-data
@@ -685,9 +691,9 @@ void LidarImageFeatures::normals(const LidarImage<double> &distanceImage, const 
         } // end: loop over 4 neighbors
       } // end: calculate cross products
       double nl = norm_2(tmpN);
-      assert(!isnan(tmpN(0)) && "tmpVec3D is NAN");
-      assert(!isnan(tmpN(1)) && "tmpVec3D is NAN");
-      assert(!isnan(tmpN(2)) && "tmpVec3D is NAN");
+      assert(!std::isnan(tmpN(0)) && "tmpVec3D is NAN");
+      assert(!std::isnan(tmpN(1)) && "tmpVec3D is NAN");
+      assert(!std::isnan(tmpN(2)) && "tmpVec3D is NAN");
 
       // check if invalid normal
       skip = skip || (nl < 0.01);
@@ -710,7 +716,7 @@ void LidarImageFeatures::normals(const LidarImage<double> &distanceImage, const 
 
         // calculate confidence in normal vector estimation
         if (normalConfidence) {
-          double confidence = min(1.0,mcpw); // maximum confidence of one of the 4 cross products
+          double confidence = std::min(1.0,mcpw); // maximum confidence of one of the 4 cross products
           double phpl = 1.0; // probability that the plane-assumption holds horizontally
           double pvpl = 1.0; // probability that the plane-assumption holds vertically
           // TODO (5): optimize: asin and exp need a lot of time to calculate (10% and 11% of this function respectively)
@@ -718,7 +724,7 @@ void LidarImageFeatures::normals(const LidarImage<double> &distanceImage, const 
           if (bi[2]) phpl *= exp(-0.5*pow(asin(abs(inner_prod_3d(pin[2],tmpN)))/nstdDevRAD,2)); // to the right
           if (bi[1]) pvpl *= exp(-0.5*pow(asin(abs(inner_prod_3d(pin[1],tmpN)))/nstdDevRAD,2)); // to the right
           if (bi[3]) pvpl *= exp(-0.5*pow(asin(abs(inner_prod_3d(pin[3],tmpN)))/nstdDevRAD,2)); // to the right
-          confidence = min(confidence,max(phpl,pvpl));
+          confidence = std::min(confidence,max(phpl,pvpl));
           normalConfidence->set(col, row, confidence);
         } // end: calculate normal confidence
       }
@@ -864,8 +870,8 @@ void LidarImageFeatures::median(const LidarImage<double> &data, LidarImage<doubl
       } else {
         // if pixel is valid calculate median across neighborhood
         elements.clear();
-        for (int ho=max(-radius,-h); ho<=min(radius,hSize-1-h); ++ho) {
-          for (int vo=max(-radius,-v); vo<=min(radius,vSize-1-v); ++vo) {
+        for (int ho=max(-radius,-h); ho<=std::min(radius,hSize-1-h); ++ho) {
+          for (int vo=max(-radius,-v); vo<=std::min(radius,vSize-1-v); ++vo) {
             if (abs(ho)+abs(vo)>maxRadSum)
               continue;
             const double &val = data(h+ho,v+vo);

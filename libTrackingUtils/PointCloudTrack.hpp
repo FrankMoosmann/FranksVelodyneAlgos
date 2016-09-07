@@ -255,7 +255,7 @@ boost::array<unsigned int, N> PointCloudTrack::getMotion2NormalHistogram(const m
   int maxIdx = 0;
   unsigned int maxVal = 0;
   for (size_t idx=0; idx<N; ++idx) { // make moves average
-    avgMove[idx] /= (double)(max(1u,result[idx]));
+    avgMove[idx] /= (double)(std::max(1u,result[idx]));
     if (result[idx] > maxVal) {
       maxVal = result[idx];
       maxIdx = idx;

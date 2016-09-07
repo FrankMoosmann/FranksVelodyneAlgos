@@ -1,6 +1,5 @@
 #include "PointCloudTrack.hpp"
 
-#define BOOST_FILESYSTEM_VERSION 2
 
 #include <boost/typeof/std/utility.hpp> //BOOST_AUTO
 #include <boost/foreach.hpp>

@@ -30,6 +30,9 @@ LIBS += \
     -lboost_program_options \
     -lboost_regex \
     -lboost_filesystem \
+    -lboost_system \
+    -lGLU \
+    -lpng \
     -lann \
     -llapack \
     -lblas

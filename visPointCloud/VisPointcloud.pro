@@ -9,8 +9,8 @@ QMAKE_CXXFLAGS += -std=gnu++0x # this enables compiler support for the upcoming 
 QT += core \
     gui \
     opengl
-HEADERS += *.hpp
-SOURCES += main.cpp  ConsoleProgressBar.cpp  Visualizer3DMap.cpp
+HEADERS += ConsoleProgressBar.hpp Visualizer3DMap.hpp
+SOURCES += ConsoleProgressBar.cpp  Visualizer3DMap.cpp main.cpp  
 FORMS += *.ui
 
 INCLUDEPATH += \
@@ -23,5 +23,7 @@ LIBS += \
     -lGui3DQt \
     -lboost_program_options \
     -lboost_filesystem \
+    -lboost_system \
+    -lGLU \
     -llapack
 #QMAKE_CXXFLAGS += -pg

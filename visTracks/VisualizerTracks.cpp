@@ -146,8 +146,8 @@ VisualizerTracks::VisualizerTracks(string trkDir, unsigned int bufferMemMB, bool
       path currFile = *iter;
       if (!is_regular_file(currFile)) continue; // Skip if not a file //i->status()
       if (is_directory(currFile)) continue; // Skip if it is a directory // i->status()
-      if (!boost::regex_match(currFile.filename(), what, textfilter)) continue; // Skip if no match
-      tmpTrackList.push_back(currFile.filename()); // File matches, store it
+      if (!boost::regex_match(currFile.filename().string(), what, textfilter)) continue; // Skip if no match
+      tmpTrackList.push_back(currFile.filename().string()); // File matches, store it
       //cout << "pushing " << currFile.filename() << endl;
     }
   }

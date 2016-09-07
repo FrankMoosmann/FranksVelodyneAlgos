@@ -1,3 +1,7 @@
+# Generated Qt files
+ui_*.h
+moc_*.cpp
+
 # Compiled Object files
 *.slo
 *.lo

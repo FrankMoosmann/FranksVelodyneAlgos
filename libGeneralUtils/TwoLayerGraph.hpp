@@ -138,7 +138,7 @@ public:
     if (i1 == _nodes1.size()) return retVec; // node doesn't exist
     for (IdT i2 = 0; i2 < _nodes2.size(); ++i2) {
       if (_connections[i1][i2] > 0)
-        retVec.push_back(make_pair(_nodes2[i2], _connections[i1][i2]));
+        retVec.push_back(std::make_pair(_nodes2[i2], _connections[i1][i2]));
     }
     return retVec;
   };

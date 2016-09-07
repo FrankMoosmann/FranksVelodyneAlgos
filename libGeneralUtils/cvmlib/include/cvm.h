@@ -111,6 +111,7 @@ typedef unsigned long long CVM_LONGEST_UINT;
 #include <string>
 #include <cstring>
 #include <limits>
+#include <cstddef>
 
 // fix for missing __builtin_clog functions
 #if defined (__INTEL_COMPILER)

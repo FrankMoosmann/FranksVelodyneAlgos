@@ -38,6 +38,9 @@ LIBS += \
     -lboost_program_options \
     -lboost_filesystem \
     -lboost_serialization \
+    -lboost_system \
+    -lGLU \
+    -lpng \
     -lann \
     -llapack \
     -lblas

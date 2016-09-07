@@ -1,7 +1,5 @@
 #include "AlgoTrackGeneration.hpp"
 
-#define BOOST_FILESYSTEM_VERSION 2
-
 #include <cfloat>
 #include <climits>
 #include <cmath>
@@ -833,7 +831,7 @@ void outputLTTTrackDetails(FrameSPtr frame, bool skipWorld)
   outfile << path(frame->sourcefile).parent_path() << endl;
   outfile.close();
 
-  path outfilename = path(outsubdir) / path(path(frame->sourcefile).filename() + extension);
+  path outfilename = path(outsubdir) / path(path(frame->sourcefile).filename().string() + extension);
   if (exists(outfilename))
     remove(outfilename); // delete old file
   cout << endl << "writing tracks into " << outfilename.string() << " " << flush;

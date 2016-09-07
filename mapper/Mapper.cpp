@@ -63,14 +63,14 @@ Mapper::Mapper(string dir, double mapResolution_, double maxDist_, const LidarIm
       path currFile = *iter;
       if (!is_regular_file(currFile)) continue; // Skip if not a file //i->status()
       if (is_directory(currFile)) continue; // Skip if it is a directory // i->status()
-      if (!boost::regex_match( currFile.leaf(), what, scanfilter)) continue; // Skip if no match
-      string leafIntens = currFile.leaf();
+      if (!boost::regex_match( currFile.leaf().string(), what, scanfilter)) continue; // Skip if no match
+      string leafIntens = currFile.leaf().string();
       leafIntens.replace(0, 4, "intens"); // replace "scan" by "intens"
       path pathIntens = directory / leafIntens;
       if ((!exists(pathIntens)) || (!is_regular_file(pathIntens)) || (is_directory(pathIntens)))
-        imageNames.push_back(pair<string, string>(currFile.file_string(), "")); // File matches, store it
+        imageNames.push_back(pair<string, string>(currFile.string(), "")); // File matches, store it
       else
-        imageNames.push_back(pair<string, string>(currFile.file_string(), pathIntens.file_string())); // File matches, store it
+        imageNames.push_back(pair<string, string>(currFile.string(), pathIntens.string())); // File matches, store it
     }
   }
   sort(imageNames.begin(), imageNames.end()); // sort alphabetically

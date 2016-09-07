@@ -10,7 +10,9 @@ QMAKE_CXXFLAGS += -std=gnu++0x # this enables compiler support for the upcoming 
 QT += core \
     gui \
     opengl
-HEADERS += *.hpp
+HEADERS += \
+    PNGReader.hpp \
+    VisualizerPNGReader.hpp
 SOURCES += \
     main.cpp \
     PNGReader.cpp \
@@ -37,8 +39,10 @@ LIBS += \
     -lboost_filesystem \
     -lboost_serialization \
     -lboost_regex \
+    -lboost_system \
+    -lpng \
     -lglut \
+    -lGLU \
     -lann \
-    -lcvm \
     -llapack \
     -lblas

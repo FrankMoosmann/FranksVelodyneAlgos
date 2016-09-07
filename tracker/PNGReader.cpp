@@ -56,9 +56,9 @@ void PNGReader::determineFilesExtractV1(std::string dir)
       path currFile = *iter;
       if (!is_regular_file(currFile)) continue; // Skip if not a file //i->status()
       if (is_directory(currFile)) continue; // Skip if it is a directory // i->status()
-      if (!boost::regex_match(currFile.filename(), what, scanfilter)) continue; // Skip if no match
-      if (boost::regex_match(currFile.filename(), what, maskfilter)) continue; // Skip if no match
-      if (boost::regex_match(currFile.filename(), what, intensfilter)) continue; // Skip if no match
+      if (!boost::regex_match(currFile.filename().string(), what, scanfilter)) continue; // Skip if no match
+      if (boost::regex_match(currFile.filename().string(), what, maskfilter)) continue; // Skip if no match
+      if (boost::regex_match(currFile.filename().string(), what, intensfilter)) continue; // Skip if no match
       dstImgFiles.push_back(currFile.string()); // File matches, store it
     }
   }
@@ -93,7 +93,7 @@ void getFiles(const path &dir, const boost::regex &filter, vector<string> &targe
     path currFile = *iter;
     if (!is_regular_file(currFile)) continue; // Skip if not a file //i->status()
     if (is_directory(currFile)) continue; // Skip if it is a directory // i->status()
-    if (!boost::regex_match(currFile.filename(), what, filter)) continue; // Skip if no match
+    if (!boost::regex_match(currFile.filename().string(), what, filter)) continue; // Skip if no match
     targetlist.push_back(currFile.string()); // File matches, store it
   }
 }

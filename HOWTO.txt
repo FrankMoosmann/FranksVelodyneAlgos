@@ -17,13 +17,11 @@ You need have installed (might not be complete):
 - QT4
 - various boost libraries
 - blas & lapack
-- libcvm
+- libpng++
 A simple ./makeAll.sh should compile everything
 
 KNOWN ISSUES
 ============
-- Compile problems due to a new boost-filesystem library.
-  => Either  #define BOOST_FILESYSTEM_VERSION 2  in all files causing problems, or adapt the code to the new boost interface.
 - Runtime-Exceptions
   => link against a different lapack/blas implementation (e.g. Intel Math Kernel Library)
 - Tracker: Failed self-localization (leading to thousands of wrong tracks) during sharp turns
@@ -99,7 +97,7 @@ All parameters can be adjusted on the console or within libTrackingUtils/Paramet
 
 Re-Training of the SVM classifier and the linear model for track association is more difficult (but cannot be avoided when using different input data).
 To do so:
-1) Delete the tdata?.txt and start the tracker in GUI-mode.
+1) Delete the tdata?.txt (tgz in the repo) and start the tracker in GUI-mode.
 2) Press "START" in the "Image Selection" area in order to read+process the first N frames. It will stop as soon as the first track-management step is about to carry out.
 3) Press "Init" in the "Track Creation" area to start looping through all the tracklets that are about to be merged/ignored
 4) For each tracklet, either press "keep" if the tracklet corresponds to a new moving object or "merge" to merge it with the existing track selected in the combo box. You can use "-5" and "+" to navigate through the tracklets.
