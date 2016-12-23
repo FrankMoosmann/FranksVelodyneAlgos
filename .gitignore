@@ -31,3 +31,4 @@ moc_*.cpp
 *.exe
 *.out
 *.app
+*.pro.user
