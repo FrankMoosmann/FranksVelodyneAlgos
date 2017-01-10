@@ -13,6 +13,7 @@
 
 // includes from this project:
 #include "DatasetReaderVeloslam.hpp"
+#include "DatasetReaderVelotracking.hpp"
 #include "Visualizer3DMapper.hpp"
 
 using namespace std;
@@ -102,12 +103,17 @@ int main(int argc, char *argv[])
   // ------------------------------------------------
   // -------------- run program ---------------------
   // ------------------------------------------------
-  DataSetReaderVeloSlam dataSetReader(imgdir);
-  Mapper mapper(&dataSetReader, (double(mapResolCM))/100.0, maxDist, exportfile);
+  DataSetReaderVeloSlam dataSetReaderSlam(imgdir);
+  DataSetReaderVeloTracking dataSetReaderTracking(imgdir);
+  cout << endl << "SlamReader detected " << dataSetReaderSlam.getFrameCount() << " frames";
+  cout << endl << "TrackingReader detected " << dataSetReaderTracking.getFrameCount() << " frames";
+  cout << endl;
+  DataSetReader *dataSetReader = dataSetReaderSlam.getFrameCount() > 0 ? (DataSetReader*)&dataSetReaderSlam : (DataSetReader*)&dataSetReaderTracking;
+  Mapper mapper(dataSetReader, (double(mapResolCM))/100.0, maxDist, exportfile);
 
   // process requested frames
   if (!ranges.empty()) {
-    unsigned int maxIdx = dataSetReader.getFrameCount()-1;
+    unsigned int maxIdx = dataSetReader->getFrameCount()-1;
     for (unsigned int i=0; i<ranges.size(); i+=2) { // loop over defined ranges
       ranges[i] = min(maxIdx,ranges[i]);
       ranges[i+1] = min(maxIdx,ranges[i+1]);

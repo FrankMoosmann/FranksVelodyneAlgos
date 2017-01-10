@@ -1,16 +1,15 @@
-#ifndef DATASETREADERVELOSLAM_H
-#define DATASETREADERVELOSLAM_H
+#ifndef DATASETREADERVELOTRACKING_H
+#define DATASETREADERVELOTRACKING_H
 
-#include <CsvReader.hpp>
 #include <vector>
 
 #include "DatasetReader.hpp"
 
-class DataSetReaderVeloSlam : public DataSetReader
+class DataSetReaderVeloTracking : public DataSetReader
 {
 public:
-  DataSetReaderVeloSlam(std::string baseDir);
-  virtual ~DataSetReaderVeloSlam();
+  DataSetReaderVeloTracking(std::string baseDir);
+  virtual ~DataSetReaderVeloTracking();
 
   virtual std::string getBaseDirectory() const;
   virtual std::string getPngConfigFilename() const;
@@ -23,13 +22,12 @@ private:
   std::string baseDirectory;
   int frameCount;
 
-  CsvReader *insReader;
-  static const size_t insFirstLineNb = 8; // the 8th line (i.e. at index 7) contains the first data row
+  std::vector<std::string> distanceTimestamps;
   std::vector<std::string> distancePngFiles;
   std::vector<std::string> intensityPngFiles;
 
-  void initImuReader();
   void scanForImages();
+  void initTimestamps();
 };
 
-#endif // DATASETREADERVELOSLAM_H
+#endif // DATASETREADERVELOTRACKING_H

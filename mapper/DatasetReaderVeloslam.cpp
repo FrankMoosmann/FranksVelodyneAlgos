@@ -19,6 +19,8 @@ DataSetReaderVeloSlam::DataSetReaderVeloSlam(std::string baseDir)
     initImuReader();
     scanForImages();
     frameCount = std::numeric_limits<int>::max();
+    if (insReader)
+        frameCount = std::min(frameCount, (int)(insReader->lineCount()-insFirstLineNb+1));
     frameCount = std::min(frameCount, (int)(distancePngFiles.size()));
     frameCount = std::min(frameCount, (int)(intensityPngFiles.size()));
 }
