@@ -4,17 +4,12 @@
 #include <cfloat>
 #include <iostream>
 #include <iomanip> // for setprecision
-#include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
-#include <boost/bind.hpp>
 
 #include <HomogeneousTransformationMatrix.hpp>
 #include <kogmo_time.h>
 #include <FMUtils.hpp>
 #include <TimeVal.hpp>
 #include <PngDistanceImage.hpp>
-#include <LidarImageProjector.hpp>
-#include <LidarImageProjectorPNG.hpp>
 #include <LidarImageFeatures.hpp>
 #include "convert_coordinates.hpp"
 
@@ -23,7 +18,6 @@
 using namespace std;
 using namespace matrixTools;
 using namespace HomogeneousTransformationMatrix;
-using namespace boost::filesystem;
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -31,10 +25,11 @@ using namespace boost::filesystem;
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-Mapper::Mapper(string dir, double mapResolution_, double maxDist_, const LidarImageProjector &proj_, std::string rem3DptsFile)
+Mapper::Mapper(DataSetReader *dataSetReader, double mapResolution_, double maxDist_, std::string rem3DptsFile)
   : resolution(mapResolution_)
     ,maxDist(maxDist_)
-    ,proj(proj_)
+    ,dataSetReader(dataSetReader)
+    ,proj(dataSetReader->getPngConfigFilename())
     ,remPtsFilename(rem3DptsFile)
     ,remPtsFile(NULL)
     ,map(NULL)
@@ -53,39 +48,7 @@ Mapper::Mapper(string dir, double mapResolution_, double maxDist_, const LidarIm
       remPtsFile = new ofstream(rem3DptsFile.c_str());
     cout << "done" << flush;
   }
-  cout << endl << "searching for distance images in " << dir << endl;
-  const path directory(dir);
-  const boost::regex scanfilter( "scan.*\\.png" ); // "\\" is transformed into "\" at compile-time
-  boost::smatch what; // match result
-  if (exists(directory)) {
-    directory_iterator end;
-    for (directory_iterator iter(directory); iter != end; ++iter) {
-      path currFile = *iter;
-      if (!is_regular_file(currFile)) continue; // Skip if not a file //i->status()
-      if (is_directory(currFile)) continue; // Skip if it is a directory // i->status()
-      if (!boost::regex_match( currFile.leaf().string(), what, scanfilter)) continue; // Skip if no match
-      string leafIntens = currFile.leaf().string();
-      leafIntens.replace(0, 4, "intens"); // replace "scan" by "intens"
-      path pathIntens = directory / leafIntens;
-      if ((!exists(pathIntens)) || (!is_regular_file(pathIntens)) || (is_directory(pathIntens)))
-        imageNames.push_back(pair<string, string>(currFile.string(), "")); // File matches, store it
-      else
-        imageNames.push_back(pair<string, string>(currFile.string(), pathIntens.string())); // File matches, store it
-    }
-  }
-  sort(imageNames.begin(), imageNames.end()); // sort alphabetically
-  cout << " -> found " << imageNames.size() << " files";
   if (remPtsUseIntensity) cout << " using intensity values";
-  cout << endl << "searching for INS data..." << flush;
-  try {
-    insData = new CsvReader(dir+"/imu.cfg", ";", "", true); // file, separator, comments-indicators, extractEmptyLines
-    cout << " -> found " << insData->lineCount()-insFirstLineNb+1 << " entries" << endl;
-    if ((insData->lineCount() < imageNames.size()+insFirstLineNb-1) || (insData->lineCount() > imageNames.size()+insFirstLineNb))
-      cerr << "mismatch between number of images (" << imageNames.size() << ") and number of lines in IMU data file ("<< insData->lineCount()+1-insFirstLineNb <<")" << endl;
-  } catch (exception &e) {
-    insData = NULL;
-    cout << " -> not found" << endl;
-  }
 }
 
 
@@ -93,7 +56,6 @@ Mapper::~Mapper()
 {
   delete map; // will write out the rest of the points into "remPtsFile"
   delete remPtsFile;
-  delete insData;
 }
 
 void Mapper::saveMap(string filename)
@@ -146,7 +108,6 @@ void Mapper::reset()
   my0 = 0.0;
   mz0 = 0.0;
   timestampFirst = 0;
-  lastFrameImsLineNb = 0;
   avgFrameDuration = 0;
 }
 
@@ -155,14 +116,17 @@ void Mapper::readScan(unsigned int fileIdx)
   using namespace HomogeneousTransformationMatrix;
   ParameterHeap* params = ParameterHeap::get();
 
+  DataSetReader::PngFile distanceImage = dataSetReader->getDistancePng(fileIdx);
+  DataSetReader::PngFile intensityImage = dataSetReader->getIntensityPng(fileIdx);
+
   cout << endl;
-  cout << endl << "reading scan " << getImgName(fileIdx) << "..." << flush;
+  cout << endl << "reading scan " << distanceImage.filename << "..." << flush;
   ASSA::TimeVal startT = ASSA::TimeVal::gettimeofday();
 
   lastFrame.swap(currentFrame);
 
   // 1) load png-file and transform to frame
-  PngDistanceImage dstImg(getImgName(fileIdx));
+  PngDistanceImage dstImg(distanceImage.filename);
   int ihsize = dstImg.width();
   int ivsize = dstImg.height();
   bool isFirstFrameRead = (currentFrame.use_count() == 0);
@@ -176,6 +140,12 @@ void Mapper::readScan(unsigned int fileIdx)
     throw range_error("Mapper::transformTo: objects have different horizontal resolution: "+to_string(hsize)+"/"+to_string(ihsize));
   if (vsize != ivsize)
     throw range_error("Mapper::transformTo: objects have different vertical resolution"+to_string(vsize)+"/"+to_string(ivsize));
+  if (distanceImage.isTimestampValid) {
+    currentFrame->recTime = distanceImage.timestamp;
+    currentFrame->timeDiffToLast = currentFrame->recTime - lastFrame->recTime;
+  } else {
+    currentFrame->recTime = 0;
+  }
 
   // Distance image generation
   currentFrame->distance.fill(DBL_MAX);
@@ -196,10 +166,10 @@ void Mapper::readScan(unsigned int fileIdx)
   }
 
   // Intensity image generation
-  if (getIntensName(fileIdx) != "") {
+  if (intensityImage.isValid) {
     currentFrame->intensity.fill(0);
     cout << "with intensity..." << flush;
-    png::image<png::gray_pixel> image(getIntensName(fileIdx));
+    png::image<png::gray_pixel> image(intensityImage.filename);
     for (int row = 0; row < vsize; ++row) {
       for (int col = 0; col < hsize; ++col) {
         if (currentFrame->distance.get(col,row) != DBL_MAX)
@@ -210,7 +180,6 @@ void Mapper::readScan(unsigned int fileIdx)
     currentFrame->intensity.fill(10); // make points visible at all
   }
 
-  currentFrame->recTime = 0;
   if (lastFrame->valid) {
     currentFrame->positionHTM2w = lastFrame->positionHTM2w;
   } else {
@@ -219,48 +188,29 @@ void Mapper::readScan(unsigned int fileIdx)
 
   // Read IMU to initialize transformations
   currentFrame->insPositionHTM2w = DIdMatrix(4);
-  size_t imuLineNb = fileIdx+insFirstLineNb;
-  if ((insData) && (insData->lineCount() > imuLineNb)) {
-    // 0 - time
-    // 1 - #sats
-    // 2-4 - lat, long, alt (DEG, meter)
-    // 5-7 - yaw,pitch,roll(RAD)
-    // 8-13 - velocities, angular and translational
-    // 14-16 - x,y,z
-    if (insData->fieldCount(imuLineNb) > 0) { // record time exists
-      currentFrame->recTime = KogniMobil::kogmo_timestamp_from_string(insData->get(imuLineNb,0).c_str());
-      currentFrame->timeDiffToLast = currentFrame->recTime - lastFrame->recTime;
+  DataSetReaderVeloSlam::ImuData imuData = dataSetReader->getImuData(fileIdx);
+  if (imuData.isPoseValid) {
+    if (isFirstFrameRead) {
+      mercatorScale = convert_coordinates::lat_to_scale(imuData.latDeg);
+      convert_coordinates::latlon_to_mercator(imuData.latDeg, imuData.lonDeg, mercatorScale, mx0, my0); // set origin to first position
+      mz0 = imuData.altMeter;
+      if (remPtsFile)
+        writeLanLonFile(remPtsFilename);
     }
-    if (insData->fieldCount(imuLineNb) > 7) {
-      double lat = insData->get<double>(imuLineNb,2);
-      double lon = insData->get<double>(imuLineNb,3);
-      double alt = insData->get<double>(imuLineNb,4);
-      double yaw = insData->get<double>(imuLineNb,5);
-      double pit = insData->get<double>(imuLineNb,6);
-      double rol = insData->get<double>(imuLineNb,7);
-      if (isFirstFrameRead) {
-        mercatorScale = convert_coordinates::lat_to_scale(lat);
-        convert_coordinates::latlon_to_mercator(lat, lon, mercatorScale, mx0, my0); // set origin to first position
-        mz0 = alt;
-        if (remPtsFile)
-          writeLanLonFile(remPtsFilename);
-      }
-      double mx, my, mz;
-      convert_coordinates::latlon_to_mercator(lat, lon, mercatorScale, mx, my);
-      mx -= mx0;
-      my -= my0;
-      mz = alt - mz0;
-      currentFrame->insPositionHTM2w = YawPitchRollXYZ_2_HTM(yaw, pit, rol, mx, my, mz);
-      if (isFirstFrameRead) {
-        currentFrame->positionHTM2w = currentFrame->insPositionHTM2w;
-        lastFrame->positionHTM2w = currentFrame->positionHTM2w;
-        lastFrame->positionHTM2v = invert_HTM(currentFrame->positionHTM2w);
-      }
+    double mx, my, mz;
+    convert_coordinates::latlon_to_mercator(imuData.latDeg, imuData.lonDeg, mercatorScale, mx, my);
+    mx -= mx0;
+    my -= my0;
+    mz = imuData.altMeter - mz0;
+    currentFrame->insPositionHTM2w = YawPitchRollXYZ_2_HTM(imuData.yawRad, imuData.pitchRad, imuData.rollRad, mx, my, mz);
+    if (isFirstFrameRead) {
+      currentFrame->positionHTM2w = currentFrame->insPositionHTM2w;
+      lastFrame->positionHTM2w = currentFrame->positionHTM2w;
+      lastFrame->positionHTM2v = invert_HTM(currentFrame->positionHTM2w);
     }
   }
 
   currentFrame->positionHTM2v = invert_HTM(currentFrame->positionHTM2w);
-  lastFrameImsLineNb = imuLineNb;
   currentFrame->valid = true;
 
   if (timestampFirst == 0)

@@ -16,7 +16,8 @@ SOURCES += \
     Frame.cpp \
     Map.cpp \
     Mapper.cpp \
-    Visualizer3DMapper.cpp
+    Visualizer3DMapper.cpp \
+    DatasetReaderVeloslam.cpp
 FORMS += *.ui
 
 INCLUDEPATH += \

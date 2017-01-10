@@ -314,7 +314,7 @@ void Map::addToMap(LFrameSPtr frame, bool adept, bool unwarp, bool remOldMap, bo
     const ScanPose newSP(frame->recTime, frame->positionHTM2w);
     double moveDiff = ublas::norm_2(oldSP.getWorldPos()-newSP.getWorldPos());
     if (moveDiff < 0.05) {
-      cout << endl << "skipping scan (diff to old position is " << moveDiff << "m)" << flush;
+      cout << endl << "skipping scan for map-integration (diff to old position is " << moveDiff << "m)" << flush;
       return;
     }
   }

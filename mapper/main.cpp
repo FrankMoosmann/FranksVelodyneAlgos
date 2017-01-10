@@ -9,10 +9,10 @@
 
 #include <Gui3DQt/Gui.hpp>
 #include <Gui3DQt/VisualizerCamControl.hpp>
-#include <LidarImageProjectorPNG.hpp>
 #include <GridND.hpp>
 
 // includes from this project:
+#include "DatasetReaderVeloslam.hpp"
 #include "Visualizer3DMapper.hpp"
 
 using namespace std;
@@ -102,12 +102,12 @@ int main(int argc, char *argv[])
   // ------------------------------------------------
   // -------------- run program ---------------------
   // ------------------------------------------------
-  LidarImageProjector *proj = new PNGImageProjector(imgdir+"/img.cfg");
-  Mapper mapper(imgdir, (double(mapResolCM))/100.0, maxDist, *proj, exportfile);
+  DataSetReaderVeloSlam dataSetReader(imgdir);
+  Mapper mapper(&dataSetReader, (double(mapResolCM))/100.0, maxDist, exportfile);
 
   // process requested frames
   if (!ranges.empty()) {
-    unsigned int maxIdx = mapper.getImgCount()-1;
+    unsigned int maxIdx = dataSetReader.getFrameCount()-1;
     for (unsigned int i=0; i<ranges.size(); i+=2) { // loop over defined ranges
       ranges[i] = min(maxIdx,ranges[i]);
       ranges[i+1] = min(maxIdx,ranges[i+1]);
