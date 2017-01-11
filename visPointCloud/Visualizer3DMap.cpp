@@ -365,13 +365,16 @@ unsigned char getVal(ifstream &ifs, bool binary) {
 
 void Visualizer3DMap::reloadTraj()
 {
-  if (mapIsP3d)
-    return;
+  string trajFilename = filename + ".traj";
+  string insTrajFilename = filename + ".ins.traj";
 
   // might throw (use try-catch?):
-  importTrajectory(traj, filename + ".traj");
-  importTrajectory(trajINS, filename + ".ins.traj");
-
+  if (exists(path(trajFilename)))
+    importTrajectory(traj, trajFilename);
+  if (exists(path(insTrajFilename)))
+    importTrajectory(trajINS, insTrajFilename);
+  if (traj.size() == 0 && trajINS.size() == 0)
+      return;
   if (traj.size() != trajINS.size())
     cerr << endl << "WARNING! estimated trajectory has size " << traj.size() << " but INS has size " << trajINS.size() << flush;
 

@@ -25,6 +25,7 @@ public:
   void saveMap(std::string filename);
   void exportMap(std::string filename);
   void exportMapPt3D(std::string filename, unsigned int resolutionFactor = 1, Map::ExportType expType = Map::Points);
+  void exportTrajectories(std::string basefilename);
   void loadMap(std::string filename);
   void importMap(std::string filename);
   void readScan(unsigned int idx);

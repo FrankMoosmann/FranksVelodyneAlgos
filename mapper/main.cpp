@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   string imgdir = ".";
   string savefile = "";
   string exportfile = "";
-  vector<unsigned int> ranges;
+  vector<int> ranges;
   bool adept, deskew, filter, remOldMap, remFarMap, gps;
   unsigned int mapResolCM;
   double maxDist;
@@ -41,17 +41,17 @@ int main(int argc, char *argv[])
   progOpt.add_options()
     ("help", "produce help message")
     ("directory", po::value(&imgdir), "Directory containing range images")
-    ("range",po::value<vector<unsigned int>>(&ranges)->multitoken(),"if specified all these image ranges {a,b} are processed straight away. Indexing starts at 0")
-    ("deskew,d", po::value<bool>(&deskew)->default_value(true), "specify in order to deskew scans")
-    ("adept,a", po::value<bool>(&adept)->default_value(true), "specify in order to use scan adaption")
+    ("range",po::value(&ranges)->multitoken(),"if specified all these image ranges {a,b} are processed straight away. Indexing starts at 0")
+    ("deskew,d", po::value(&deskew)->default_value(true), "specify in order to deskew scans")
+    ("adept,a", po::value(&adept)->default_value(true), "specify in order to use scan adaption")
     ("gps,g", "use GPS for localization instead of scan matching")
     ("incremental,i", "specify in order to achieve incremental scan matching only")
-    ("local,l", "specify in order to keep only local map")
+    ("local,l", "specify in order to keep only local map (remove points >> maxScanDist)")
     ("filter,f", "specify in order to filter map afterwards")
-    ("resolution,r", po::value<unsigned int>(&mapResolCM)->default_value(5), "map resolution in cm")
+    ("resolution,r", po::value(&mapResolCM)->default_value(5), "map resolution in cm")
     ("maxScanDist,m",po::value(&maxDist)->default_value(50.0),"maximum range values used for mapping (in meter)")
-    ("save", po::value<string>(&savefile), "if this and range is specified, map is saved to the specified file. disables GUI")
-    ("export", po::value<string>(&exportfile), "if this and range is specified, map is exported to the specified file. disables GUI")
+    ("save", po::value(&savefile), "if this and range is specified, map is saved to the specified file (via boost::serialization as either .txt, .xml, .bin). disables GUI")
+    ("export", po::value(&exportfile), "if this and range is specified, map and trajectory is exported to the specified file (x y z values, binary if extension ends with 'b', including intensity if extension ends with 'i' or 'ib'). disables GUI")
     ("gui", "start GUI although processed scans were already stored into a file")
     ;
 
@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
 
   po::variables_map poVM;
   try {
-    po::store(po::command_line_parser(argc, argv).options(progOpt).positional(posOpt).run(), poVM);
+    //po::store(po::command_line_parser(argc, argv).options(progOpt).positional(posOpt).run(), poVM);
+    po::store(po::parse_command_line(argc, argv, progOpt, po::command_line_style::unix_style ^ po::command_line_style::allow_short), poVM);
     po::notify(poVM);
   } catch (exception e) {
     cerr << "Error when parsing arguments" << endl << progOpt << endl;
@@ -113,11 +114,14 @@ int main(int argc, char *argv[])
 
   // process requested frames
   if (!ranges.empty()) {
-    unsigned int maxIdx = dataSetReader->getFrameCount()-1;
-    for (unsigned int i=0; i<ranges.size(); i+=2) { // loop over defined ranges
+    int maxIdx = dataSetReader->getFrameCount()-1;
+    for (size_t i=0; i<ranges.size(); i+=2) { // loop over defined ranges
       ranges[i] = min(maxIdx,ranges[i]);
       ranges[i+1] = min(maxIdx,ranges[i+1]);
-      for (unsigned int idx=ranges[i]; idx<=ranges[i+1]; idx++) { // look over images in current range
+      if (ranges[i+1] < 0) {
+        ranges[i+1] = maxIdx;
+      }
+      for (int idx=ranges[i]; idx<=ranges[i+1]; idx++) { // look over images in current range
         mapper.readScan(idx);
         if (!gps) mapper.registerScan(nbRegSubsamples, deskew);
         mapper.addScan(adept, deskew, remOldMap, remFarMap, gps);
@@ -125,10 +129,13 @@ int main(int argc, char *argv[])
     }
     if (filter)
       mapper.filterMap();
-    if (poVM.count("save")) {
+    if (savefile.length() > 0) {
       cout << endl << "saving to file " << savefile << "..." << flush;
       mapper.saveMap(savefile);
       cout << "done" << flush;
+    }
+    if (exportfile.length() > 0) {
+      mapper.exportTrajectories(exportfile);
     }
   }
 

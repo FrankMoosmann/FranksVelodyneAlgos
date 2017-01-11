@@ -73,6 +73,11 @@ void Mapper::exportMap(string filename)
   if (map) map->exportMap(filename);
 }
 
+void Mapper::exportTrajectories(string basefilename)
+{
+  if (map) map->exportTrajectories(basefilename);
+}
+
 void Mapper::writeLanLonFile(std::string mapfilename)
 {
   double lat0,lon0;
@@ -408,13 +413,12 @@ void Mapper::mapRemovedPoint(double x, double y, double z, unsigned char intensi
       remPtsFile->write(reinterpret_cast<char *>(&x),sizeof(double)); // binary output
       remPtsFile->write(reinterpret_cast<char *>(&y),sizeof(double)); // binary output
       remPtsFile->write(reinterpret_cast<char *>(&z),sizeof(double)); // binary output
+      if (remPtsUseIntensity)
+          remPtsFile->write(reinterpret_cast<char *>(&intensity),sizeof(unsigned char)); // binary output
     } else
       (*remPtsFile) << x << " " << y << " " << z << " ";
-    if (remPtsUseIntensity) {
-      if (remPtsFileIsBinary)
-        remPtsFile->write(reinterpret_cast<char *>(&intensity),sizeof(unsigned char)); // binary output
-      else
-        (*remPtsFile) << (int)intensity << " ";
+      if (remPtsUseIntensity) {
+          (*remPtsFile) << (int)intensity << " ";
     }
   }
 }

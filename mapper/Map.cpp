@@ -724,8 +724,7 @@ void Map::exportMap(string filename, unsigned int resolutionFactor, ExportType t
 {
   //save trajectory
   if (type == Surfaces) {
-    exportTrajectory(trajectory, filename + ".traj");
-    exportTrajectory(insTrajectory, filename + ".ins.traj");
+    exportTrajectories(filename);
   }
 
   //save map
