@@ -67,10 +67,10 @@ int main(int argc, char *argv[])
     cerr << "Error when parsing arguments" << endl << progOpt << endl;
     return 1;
   }
-  gps = poVM.count("gps");
-  remOldMap = poVM.count("incremental");
-  remFarMap = poVM.count("local");
-  filter = poVM.count("filter");
+  gps = poVM.count("gps") > 0;
+  remOldMap = poVM.count("incremental") > 0;
+  remFarMap = poVM.count("local") > 0;
+  filter = poVM.count("filter") > 0;
 
   if (poVM.count("help")) {
     cout << progOpt << endl;
