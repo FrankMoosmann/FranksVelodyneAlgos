@@ -1,0 +1,7 @@
+scans - IMU File
+=======================
+
+
+
+;;GPS positions;;;angles;;;angular velocities;;;vehicle velocities;;;cartesian positions
+timestamp;#sats;lat;long;alt;heading;pitch;roll;omega_h;omega_p;omega_r;vx;vy;vDown;x,y,z
