@@ -129,7 +129,7 @@ FeatureMaxRangeNormalizer* normalizerFromFile(std::string filename)
 {
   FeatureMaxRangeNormalizer *normalizer = new FeatureMaxRangeNormalizer();
   try {
-    ifstream infile(filename.c_str());
+    std::ifstream infile(filename.c_str());
     string line;
     getline(infile,line);  // comment line
     getline(infile,line);
@@ -197,8 +197,8 @@ void decideMerge(FrameSPtr frame, TrackRegistration::SPtr reg, bool coutOnly)
     cout << endl << "deciding about merge...";
 
   // prepare loop
-  ofstream tdataout1;
-  ofstream tdataout2;
+  std::ofstream tdataout1;
+  std::ofstream tdataout2;
   if (coutOnly) {
     tdataout1.open("tdata1.txt", ios::out | ios::app);
     tdataout1 << std::scientific;
@@ -803,7 +803,7 @@ void mergeSplitCreateTracks(FrameSPtr frame, TrackRegistration::SPtr reg)
 
 }
 
-void outputSurface(ofstream &outfile, PointCloudTrack::Surface::SPtr s, const mdefs::DMatrix &R, const mdefs::DVector &t, mdefs::DVector &p)
+void outputSurface(std::ofstream &outfile, PointCloudTrack::Surface::SPtr s, const mdefs::DMatrix &R, const mdefs::DVector &t, mdefs::DVector &p)
 {
   // points, normal, NC
   p = ublas::prod(R, s->position) + t;
@@ -824,7 +824,7 @@ void outputLTTTrackDetails(FrameSPtr frame, bool skipWorld)
   string extension = ".txt";
   if (!is_directory(outsubdir))
     create_directory(outsubdir);
-  ofstream outfile;
+  std::ofstream outfile;
 
   path imgSource = path(outsubdir) / path("sourcedir");
   outfile.open(imgSource.string().c_str(), ios_base::trunc);

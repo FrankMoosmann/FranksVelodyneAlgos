@@ -286,7 +286,7 @@ void Visualizer3DMap::updateTraj3D()
 void Visualizer3DMap::importTrajectory(deque<GlVec3> &traj, string filename)
 {
   cout << endl << "- loading trajectory " << filename << "..." << flush;
-  ifstream in(filename.c_str());
+  std::ifstream in(filename.c_str());
   if (!in.good())
     throw runtime_error("Map::importTrajectory: problem opening the file for reading");
   traj.clear();
@@ -340,7 +340,7 @@ void Visualizer3DMap::loadMap()
 }
 
 template <typename T>
-T getVal(ifstream &ifs, bool binary) {
+T getVal(std::ifstream &ifs, bool binary) {
   T t;
   if (binary)
     ifs.read(reinterpret_cast<char *>(&t),sizeof(T));
@@ -350,7 +350,7 @@ T getVal(ifstream &ifs, bool binary) {
 }
 
 template <>
-unsigned char getVal(ifstream &ifs, bool binary) {
+unsigned char getVal(std::ifstream &ifs, bool binary) {
   unsigned char t;
   if (binary) {
     ifs.read(reinterpret_cast<char *>(&t),sizeof(unsigned char));
@@ -427,7 +427,7 @@ void Visualizer3DMap::reloadMap()
   pminY = FLT_MAX;
   pmaxX = -FLT_MAX;
   pmaxY = -FLT_MAX;
-  ifstream in;
+  std::ifstream in;
   if (mapIsBinary)
     in.open(filename.c_str(), ios::binary);
   else

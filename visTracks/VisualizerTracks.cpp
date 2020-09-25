@@ -120,7 +120,7 @@ VisualizerTracks::VisualizerTracks(string trkDir, unsigned int bufferMemMB, bool
   // determine directory where image files are located
   string imgDir;
   string sourcedirfile = path(trkDir / path("sourcedir")).string();
-  ifstream imgSourceFile(sourcedirfile.c_str());
+  std::ifstream imgSourceFile(sourcedirfile.c_str());
   getline(imgSourceFile,imgDir);
   imgSourceFile.close();
   if (imgDir.length() == 0) {
@@ -324,7 +324,7 @@ void VisualizerTracks::loadWorldModelRenderer(string p3dFile)
     delete worldModelRenderer;
     worldModelRenderer = new Gui3DQt::PointCloudRenderer();
     worldModelRenderer->reserve(expectedFilePts*1.1);
-    ifstream in(p3dFile.c_str());
+    std::ifstream in(p3dFile.c_str());
     if (!in.good())
       throw runtime_error("VisualizerTracks::loadWorldModelRenderer: problem opening the file for reading");
     Gui3DQt::PointCloudRenderer::GlVec3 point;

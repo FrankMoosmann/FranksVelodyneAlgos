@@ -62,16 +62,17 @@ FeatureVector FeatureVector::clone(DimIndexIterator diBegin, DimIndexIterator di
 template <class InputIterator, class InsertIterator>
 void FeatureVector::extractDimension(InputIterator FeatureVectorBegin, InputIterator FeatureVectorEnd, InsertIterator ins, const unsigned int dimNb, bool checkEntryValidity)
 {
-  for (InputIterator fVec = FeatureVectorBegin; fVec != FeatureVectorEnd; ++fVec) {
+  for (InputIterator fVecIt = FeatureVectorBegin; fVecIt != FeatureVectorEnd; ++fVecIt) {
+	FeatureVector& fVec = *fVecIt;
     if (checkEntryValidity) {
       try{
-        TagInvalidEntries tag = fVec->getTag<TagInvalidEntries>();
+        TagInvalidEntries tag = fVec.getTag<TagInvalidEntries>();
         if (tag.isValid(dimNb))
-          *ins++ = fVec->getElement(dimNb);
+          *ins++ = fVec.getElement(dimNb);
       } catch(std::exception& e) {
       }
     } else {
-      *ins++ = fVec->getElement(dimNb);
+      *ins++ = fVec.getElement(dimNb);
     }
   }
 }
@@ -84,15 +85,16 @@ FeatureData FeatureVector::compEmpMean (InputIterator FeatureVectorBegin, InputI
   FeatureData sum = 0;
   FeatureData count = 0;
   while (FeatureVectorBegin != FeatureVectorEnd) {
+	FeatureVector& fVec = *FeatureVectorBegin;
   	bool use = true;
   	if (checkEntryValidity){
   		try{
   			use = false;
-  			TagInvalidEntries tag = FeatureVectorBegin->getTag<TagInvalidEntries>();
+  			TagInvalidEntries tag = fVec.getTag<TagInvalidEntries>();
   			if(tag.isValid(dimNb)){
 //  				if(dimNb == 16 ||dimNb == 15 || dimNb == 17)
-//  					std::cout << FeatureVectorBegin->getElement(dimNb)<< ", " << std::flush;
-  				sum += FeatureVectorBegin->getElement(dimNb);
+//  					std::cout << fVec.getElement(dimNb)<< ", " << std::flush;
+  				sum += fVec.getElement(dimNb);
   				count += 1;
   			}
   		}catch(std::exception& e){
@@ -100,7 +102,7 @@ FeatureData FeatureVector::compEmpMean (InputIterator FeatureVectorBegin, InputI
   		}
   	}
   	if (use) {
-			sum += FeatureVectorBegin->getElement(dimNb);
+			sum += fVec.getElement(dimNb);
 			count += 1;
   	}
     ++FeatureVectorBegin;
@@ -115,19 +117,20 @@ FeatureData FeatureVector::compEmpMean (InputIterator FeatureVectorBegin, InputI
 template <class InputIterator>
 FeatureVector FeatureVector::compEmpMean (InputIterator FeatureVectorBegin, InputIterator FeatureVectorEnd, bool checkEntryValidity)
 {
-	unsigned int nbDim = FeatureVectorBegin->size();
+  unsigned int nbDim = FeatureVectorBegin->size();
   FeatureData *sum = new FeatureData[nbDim];
   for (unsigned int i=0; i<nbDim; ++i)
   	sum[i] = 0;
   std::vector<FeatureData> count(nbDim,0.0);
   while (FeatureVectorBegin != FeatureVectorEnd) {
+	FeatureVector& fVec = *FeatureVectorBegin;
   	bool use = true;
   	if (checkEntryValidity) {
   		try{
-  			TagInvalidEntries tag = FeatureVectorBegin->getTag<TagInvalidEntries>();
+  			TagInvalidEntries tag = fVec.getTag<TagInvalidEntries>();
   			for (unsigned int i=0; i<nbDim; ++i){
   				if(tag.isValid(i)){
-  				sum[i] += FeatureVectorBegin->getElement(i);
+  				sum[i] += fVec.getElement(i);
   				count.at(i) += 1;
   				}
   			}
@@ -138,7 +141,7 @@ FeatureVector FeatureVector::compEmpMean (InputIterator FeatureVectorBegin, Inpu
   	}
   	if( use ){
   		for (unsigned int i=0; i<nbDim; ++i){
-  			sum[i] += FeatureVectorBegin->getElement(i);
+  			sum[i] += fVec.getElement(i);
   			count.at(i) += 1;
   		}
   	}
@@ -164,12 +167,13 @@ FeatureData FeatureVector::compEmpStdDeviation (InputIterator FeatureVectorBegin
   FeatureData sum = 0.0;
   FeatureData count = 0;
   while (FeatureVectorBegin != FeatureVectorEnd) {
+	FeatureVector& fVec = *FeatureVectorBegin;
   	bool use = true;
   	if (checkEntryValidity){
   		try{
-  			TagInvalidEntries tag = FeatureVectorBegin->getTag<TagInvalidEntries>();
+  			TagInvalidEntries tag = fVec.getTag<TagInvalidEntries>();
   			if(tag.isValid(dimNb)){
-  				FeatureData fVal = FeatureVectorBegin->getElement(dimNb);
+  				FeatureData fVal = fVec.getElement(dimNb);
   				sum += pow(fVal - mean,2);
   				count += 1.0;
   			}
@@ -178,7 +182,7 @@ FeatureData FeatureVector::compEmpStdDeviation (InputIterator FeatureVectorBegin
   		}
   	}
   	if( use ) {
-  		FeatureData fVal = FeatureVectorBegin->getElement(dimNb);
+  		FeatureData fVal = fVec.getElement(dimNb);
   		sum += pow(fVal - mean,2);
 			count += 1.0;
   	}

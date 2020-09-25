@@ -50,7 +50,7 @@ Archive & ar,
 std::unordered_map<Key, Type, Hash, Compare, Allocator> &t,
 const unsigned int /* file_version */
 ){
-boost::serialization::stl::load_collection<
+boost::serialization::stl::collection_load_impl<
 Archive,
 std::unordered_map<Key, Type, Hash, Compare, Allocator>,
 boost::serialization::stl::archive_input_map<

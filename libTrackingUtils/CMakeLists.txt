@@ -9,6 +9,12 @@ set(CMAKE_AUTOMOC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
 
+#set(AUTOGEN_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+#^^^^this seems not to work. files are generated within:
+set(AUTOGEN_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_autogen")
+#message(STATUS "CMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}")
+#message(STATUS "AUTOGEN_BUILD_DIR=${AUTOGEN_BUILD_DIR}")
+
 find_package(Boost REQUIRED COMPONENTS filesystem thread)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 find_library(ann_LIBRARIES NAMES ann)
@@ -59,7 +65,7 @@ qt5_use_modules(${PROJECT_NAME} Widgets)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR} # generated ui_ files need to be exported
+  ${AUTOGEN_BUILD_DIR}/include # generated ui_ files need to be exported
 )
 
 target_link_libraries(${PROJECT_NAME} 
